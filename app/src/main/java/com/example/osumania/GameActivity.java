@@ -20,10 +20,14 @@ public class GameActivity extends AppCompatActivity {
 
     final String TAG = "GameActivity";
     Button key1, key2, key3, key4;
+
     ImageView up,down,left,right;
     Game g;
     TextView combo;
     int comboCount;
+
+    //final MediaPlayer soundEffect = MediaPlayer.create(this, );
+    //TODO: find out how to access file with sound effects for the URI for MediaPLayer
 
 
 
@@ -32,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         setUpComponents();
+
         initOnTouchListeners();
         Bundle extras = getIntent().getExtras();
 
@@ -40,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
         g = new Game(song);
 
         comboCount = 0;
+
 
     }
 
