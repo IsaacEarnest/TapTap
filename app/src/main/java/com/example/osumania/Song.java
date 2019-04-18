@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class Song {
     private String name;
     private String artist;
-    private MP3Player song;
+   // private MP3Player song;
     private Image bg;
     private Image icon;
     final private String path;
@@ -32,16 +32,7 @@ public class Song {
         list = new ArrayList<>();
         highScores = new ArrayList<>();
 
-        //bg
-        if (findFileName(path, "jpg").get(0) != null) {
-            this.bg = ImageIO.read(new File(path + findFileName(path, "jpg").get(0))).getScaledInstance(1200, 700, Image.SCALE_SMOOTH);
-            this.icon = ImageIO.read(new File(path + findFileName(path, "jpg").get(0))).getScaledInstance(120, 70, Image.SCALE_SMOOTH);
-        } else if (findFileName(path, "png").get(0) != null) {
-            this.bg = ImageIO.read(new File(path + findFileName(path, "png").get(0))).getScaledInstance(1200, 700, Image.SCALE_SMOOTH);
-            this.icon = ImageIO.read(new File(path + findFileName(path, "png").get(0))).getScaledInstance(120, 70, Image.SCALE_SMOOTH);
-        } else {
-            this.bg = null;
-        }
+
 
         ArrayList<String> osuFiles = findFileName(path, "osu");
         numOfDiff = osuFiles.size();
@@ -81,7 +72,7 @@ public class Song {
                 line = reader.readLine();
             }
 
-            this.song = new MP3Player(new File(path + "/" + line.split(":")[1].trim()));
+           // this.song = new MP3Player(new File(path + "/" + line.split(":")[1].trim()));
 
             while (!line.contains("Mode:")) {
                 line = reader.readLine();
