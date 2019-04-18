@@ -1,5 +1,6 @@
 package com.example.osumania;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,7 +9,7 @@ public class Incrementor {
     Timer timer;
     boolean isRunning;
     int interval = 50;
-    Node node;
+    ArrayList<Node> nodes;
 
     /*  Increments timer based on interval once started.
         Might move to MainActivity or GameActivity to
@@ -18,6 +19,9 @@ public class Incrementor {
         stopwatch.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                for (Node node: nodes) {
+                    node.moveNodeDown();
+                }
             }
         }, 0, interval);
     }
