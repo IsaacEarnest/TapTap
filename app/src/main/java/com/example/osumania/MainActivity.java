@@ -3,11 +3,18 @@ package com.example.osumania;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.TextView;
+
+
 public class MainActivity extends AppCompatActivity {
+    public Button testSongButton;
+    public TextView testSongView;
+
 
     private final String TAG = "MainActivity";
     Button songB1, songB2;
@@ -36,4 +43,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("SONGNAME",songName);
         startActivity(intent);
     }
+
+
+
 }
