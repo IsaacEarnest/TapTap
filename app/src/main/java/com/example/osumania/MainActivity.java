@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     public Button testSongButton;
     public TextView testSongView;
     private String song;
+    public Button goToTestButton;
+
 
 
     private final String TAG = "MainActivity";
@@ -27,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
+        goToTestButton = findViewById(R.id.goToTestButton);
         initOnClickListeners();
+        toTestSoundButton();
 
     }
 
@@ -52,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void toTestSoundButton() {
+        goToTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toSoundTestActivity();
+            }
+        });
+    }
 
+    private void toSoundTestActivity() {
+        Intent forwardIntent = new Intent(MainActivity.this, SoundTestActivity.class);
+        startActivity(forwardIntent);
+    }
 
 }

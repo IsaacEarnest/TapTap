@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Osu Mania</string>
+    <string name="click_me">CLICK ME</string>
+    <string name="song_2">Song 2</string>
+    <string name="song_1">Song 1</string>
+    <string name="textview">TextView</string>
+    <string name="to_soundtest">To SoundTest</string>
 </resources>
