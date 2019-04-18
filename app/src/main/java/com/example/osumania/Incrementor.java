@@ -25,4 +25,9 @@ public class Incrementor {
             }
         }, 0, interval);
     }
+
+    /*  Spawn node based on next song note's millisecond value, may spawn certain
+        millisecond value earlier so user can see note's occurrence before the user
+        has to press the corresponding button to the note.
+    */
 }
