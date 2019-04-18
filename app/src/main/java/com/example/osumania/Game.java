@@ -1,17 +1,18 @@
 package com.example.osumania;
 
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Chronometer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
     final String TAG = "GameClass";
 
-    private String songName;
     private int scrollSpeed;
     enum keys{
         firstK,
@@ -21,23 +22,23 @@ public class Game {
     }
     ArrayList<Integer> first,second,third,fourth;
     private double StartTime;
-    private double millis;
-    private double greatMargin;
-    private double okMargin;
-    private double badMargin;
+    private double greatMargin,okMargin,badMargin,missMargin;
     private Chronometer chronometer;
 
-    private String path;
-
-    public Game(String path){
-        this.songName = songName;
+    public Game(InputStream input) throws IOException {
         this.scrollSpeed = 31;
-        this.path = path;
-        StartTime=System.currentTimeMillis();
+
         greatMargin = 20;
         okMargin = 40;
         badMargin = 60;
-        parseSongFile();
+        missMargin = 150;
+
+        first = new ArrayList<>();
+        second = new ArrayList<>();
+        third = new ArrayList<>();
+        fourth = new ArrayList<>();
+
+        parseSongFile(input);
 
     }
     public void increaseScrollSpeed(){
@@ -47,7 +48,8 @@ public class Game {
         scrollSpeed++;
     }
     public void startSong(){
-
+        //TODO start mp3
+        StartTime=System.currentTimeMillis();
     }
     public void hit(keys pos){
 
@@ -69,7 +71,7 @@ public class Game {
     }
     private String findHitAcc(keys pos){
 
-        millis=System.currentTimeMillis()-StartTime;
+        double millis=System.currentTimeMillis()-StartTime;
         if(pos.equals(keys.firstK)){
             if(first!=null)
             for (Integer i:first) {
@@ -82,6 +84,9 @@ public class Game {
                 }else if (i-millis<badMargin){
                     first.remove(i);
                     return "bad";
+                }else if (i-millis<=missMargin){
+                    first.remove(i);
+                    return "miss";
                 }
             }
         }else if(pos.equals(keys.secondK)){
@@ -96,6 +101,9 @@ public class Game {
                 }else if (i-millis<badMargin){
                     second.remove(i);
                     return "bad";
+                }else if (i-millis<=missMargin){
+                    second.remove(i);
+                    return "miss";
                 }
             }
         }else if(pos.equals(keys.thirdK)){
@@ -110,6 +118,9 @@ public class Game {
                 }else if (i-millis<badMargin){
                     third.remove(i);
                     return "bad";
+                }else if (i-millis<=missMargin){
+                    third.remove(i);
+                    return "miss";
                 }
             }
         }else if(pos.equals(keys.fourthK)){
@@ -124,6 +135,9 @@ public class Game {
                 }else if (i-millis<badMargin){
                     fourth.remove(i);
                     return "bad";
+                }else if (i-millis<=missMargin){
+                    fourth.remove(i);
+                    return "miss";
                 }
             }
         }
@@ -131,20 +145,20 @@ public class Game {
         return "test";
     }
 
-    public void parseSongFile(){
+    public void parseSongFile(InputStream input) throws IOException {
         Log.d(TAG,"parsing");
-        BufferedReader reader;
 
         String line = "";
         String firstRow = "64";
         String secondRow = "192";
         String thirdRow = "320";
         String fourthRow = "448";
-        try {
-            //TODO have actual error handling for fileNotFound
-            reader = new BufferedReader(new FileReader(path));
 
+            //TODO have actual error handling for fileNotFound
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            Log.d(TAG, "File open for business!");
             while (!reader.readLine().equals("[HitObjects]")) {
+
             }
             //Adding Notes
             //TODO ask what path to use to get to res\songs\(specificsong)\*.osu file
@@ -163,11 +177,9 @@ public class Game {
                     Log.d(TAG,""+fourth);
                     }
             }
-
-        }catch(Exception e){
-            //TODO how to pass in context to exception handling without making an unnecessary parameter for method
-            //ModalDialogs.notifyException(this,e);
-        }
+    }
+    public int getScrollSpeed(){
+        return scrollSpeed;
     }
 
 

@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
 import static com.example.osumania.Game.keys.secondK;
@@ -33,20 +36,24 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
-        setUpComponents();
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_game);
+            setUpComponents();
 
-        initOnTouchListeners();
-        Bundle extras = getIntent().getExtras();
+            initOnTouchListeners();
+            Bundle extras = getIntent().getExtras();
 
-        //root of the problem for finding what file to parse
-        String song = extras.getString("SONGNAME");
-        g = new Game(song);
+            //root of the problem for finding what file to parse
+            String song = extras.getString("SONGNAME");
+            InputStream songInput = getAssets().open("Songs/Asu no Yozora/Asu no Yozora[Hard].osu");
+            g = new Game(songInput);
 
-        comboCount = 0;
+            comboCount = 0;
 
-
+        } catch (IOException e) {
+            Log.e("GameActivity",e.getMessage(), e);
+        }
     }
 
     private void updateCombo(boolean wasHit){
