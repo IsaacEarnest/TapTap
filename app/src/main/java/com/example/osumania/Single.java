@@ -1,5 +1,6 @@
 package com.example.osumania;
 
+import android.media.Image;
 import android.support.constraint.solver.widgets.Rectangle;
 
 public class Single {
