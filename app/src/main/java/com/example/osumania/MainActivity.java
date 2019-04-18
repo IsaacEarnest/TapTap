@@ -14,6 +14,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     public Button testSongButton;
     public TextView testSongView;
+    private String song;
 
 
     private final String TAG = "MainActivity";
@@ -33,15 +34,21 @@ public class MainActivity extends AppCompatActivity {
     private void initOnClickListeners() {
         songB1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                song = "SONG1";
+                openGameActivity();
+            }
+        });
+        songB2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                song = "SONG2";
                 openGameActivity();
             }
         });
     }
     private void openGameActivity() {
-        String songName = "";
         Log.d(TAG,"openGameActivity: Opening game activity");
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("SONGNAME",songName);
+        intent.putExtra("SONGNAME",song);
         startActivity(intent);
     }
 
