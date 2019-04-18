@@ -9,7 +9,9 @@ import android.widget.Button;
 public class GameActivity extends AppCompatActivity {
 
     Button key1, key2, key3, key4;
-    MediaPlayer soundEffect = MediaPlayer.create(this, R.)
+    final MediaPlayer soundEffect = MediaPlayer.create(this, );
+    //TODO: find out how to access file with sound effects for the URI for MediaPLayer
+    Incrementor incrementor;
 
 
     @Override
@@ -17,7 +19,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         setUpComponents();
-        playButtonSoundEffect(key1, R.);
+        playButtonSoundEffect(key1);
 
     }
 
