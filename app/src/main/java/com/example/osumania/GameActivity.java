@@ -8,8 +8,8 @@ import android.widget.Button;
 
 public class GameActivity extends AppCompatActivity {
 
-    Button button1, button2, button3, button4;
-    MediaPlayer soundEffect = MediaPlayer.create(this, )
+    Button key1, key2, key3, key4;
+    MediaPlayer soundEffect = MediaPlayer.create(this, R.)
 
 
     @Override
@@ -17,15 +17,15 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         setUpComponents();
-        playButtonSoundEffect(button1, );
+        playButtonSoundEffect(key1, R.);
 
     }
 
     private void setUpComponents(){
-        button1.findViewById(R.id.button1);
-        button2.findViewById(R.id.button2);
-        button3.findViewById(R.id.button3);
-        button4.findViewById(R.id.button4);
+        key1.findViewById(R.id.key1);
+        key2.findViewById(R.id.key2);
+        key3.findViewById(R.id.key3);
+        key4.findViewById(R.id.key4);
     }
 
     private void playButtonSoundEffect(Button button){
