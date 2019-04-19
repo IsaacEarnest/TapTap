@@ -3,6 +3,7 @@ package com.example.osumania;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -26,6 +27,7 @@ public class Game {
     private double StartTime;
     private double greatMargin,okMargin,badMargin,missMargin;
     private Chronometer chronometer;
+    private ImageView up, down, left, right;
 
     public Game(InputStream input) throws IOException {
         this.scrollSpeed = 31;
@@ -48,18 +50,23 @@ public class Game {
         scrollSpeed++;
     }
     public void decreaseScrollSpeed(){
-        scrollSpeed++;
+        scrollSpeed--;
     }
     public void startSong(){
 
         //TODO start mp3
         StartTime = System.currentTimeMillis();
     }
-    public void spawnIcon(int noteHitTime, ArrayList column){
+    public void spawnIcon(int noteHitTime, int position){
         int noteSpawnTime = noteHitTime - scrollSpeed;
-        for(int i = 0; i<=column.size(); i++) {
-            if(
-            Node node = new Node(, 0, noteSpawnTime, )
+        if (position == 64){
+            Node node = new Node(position, 0, noteSpawnTime, left);
+        }else if (position == 192){
+            Node node = new Node(position, 0, noteSpawnTime, up);
+        }else if (position == 320){
+            Node node = new Node(position, 0, noteSpawnTime, down);
+        }else if (position == 448){
+            Node node = new Node(position, 0, noteSpawnTime, right);
         }
     }
     public void hit(keys pos){
