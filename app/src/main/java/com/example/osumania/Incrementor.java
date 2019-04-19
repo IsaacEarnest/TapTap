@@ -20,10 +20,10 @@ public class Incrementor {
         Might move to MainActivity or GameActivity to
         change game properties by putting methods in run().
     */
-    public void startTimer(Timer stopwatch){
+    public void startTimer(){
         isRunning = true;
         int interval = 50;
-        stopwatch.scheduleAtFixedRate(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 note.moveNodeDown();

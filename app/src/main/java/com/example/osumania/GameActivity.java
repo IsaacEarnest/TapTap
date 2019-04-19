@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Timer;
 
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
@@ -28,11 +29,9 @@ public class GameActivity extends AppCompatActivity {
     Game g;
     TextView combo;
     int comboCount;
-
-    //final MediaPlayer soundEffect = MediaPlayer.create(this, );
-    //TODO: find out how to access file with sound effects for the URI for MediaPLayer
-
-
+    Timer timer;
+    boolean isCounting;
+    Incrementor incrementor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,8 @@ public class GameActivity extends AppCompatActivity {
             g = new Game(songInput);
 
             comboCount = 0;
+            incrementor = new Incrementor(timer, isCounting);
+            incrementor.startTimer();
 
         } catch (IOException e) {
             Log.e("GameActivity",e.getMessage(), e);
@@ -61,6 +62,7 @@ public class GameActivity extends AppCompatActivity {
         else comboCount = 0;
         combo.setText(""+comboCount);
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         key1.setOnTouchListener(new View.OnTouchListener() {

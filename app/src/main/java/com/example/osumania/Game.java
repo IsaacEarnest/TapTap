@@ -21,6 +21,7 @@ public class Game {
         fourthK
     }
     ArrayList<Integer> first,second,third,fourth;
+    ArrayList<Node> nodes;
     private double StartTime;
     private double greatMargin,okMargin,badMargin,missMargin;
     private Chronometer chronometer;
@@ -37,6 +38,7 @@ public class Game {
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
+        nodes = new ArrayList<>();
 
         parseSongFile(input);
 
@@ -49,7 +51,14 @@ public class Game {
     }
     public void startSong(){
         //TODO start mp3
-        StartTime=System.currentTimeMillis();
+        StartTime = System.currentTimeMillis();
+    }
+    public void spawnIcon(int noteHitTime, ArrayList column){
+        int noteSpawnTime = noteHitTime - scrollSpeed;
+        for(int i = 0; i<=column.size(); i++) {
+            if(
+            Node node = new Node(, 0, noteSpawnTime, )
+        }
     }
     public void hit(keys pos){
 
