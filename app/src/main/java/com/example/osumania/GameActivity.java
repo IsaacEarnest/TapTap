@@ -2,6 +2,7 @@ package com.example.osumania;
 
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -63,18 +64,25 @@ public class GameActivity extends AppCompatActivity {
 
             //root of the problem for finding what file to parse
             String song = extras.getString("SONGNAME");
-            InputStream songInput = getAssets().open("Songs/Asu no Yozora/Asu no Yozora[Hard].osu");
+            InputStream songInput = getAssets().open(song);
+
             g = new Game(songInput);
             mp = MediaPlayer.create(this, R.raw.normalhitclap);
             mp2 = MediaPlayer.create(this, R.raw.normalhitclap);
             mp3 = MediaPlayer.create(this, R.raw.normalhitclap);
             mp4 = MediaPlayer.create(this, R.raw.normalhitclap);
-            mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
+            if(song.equals("Songs/Asu no Yozora/Asu no Yozora[Hard].osu"))
+                mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
+            if(song.equals("Songs/Crystalia/Crystalia [Hyper].osu"))
+                mpSong = MediaPlayer.create(this,R.raw.crystalia);
             mpSong.start();
             comboCount = 0;
 
             c = new Chronometer(this);
             c.setBase(SystemClock.elapsedRealtime());
+            Log.d(TAG,""+c.getBase());
+
+
             c.start();
             tickUpdate();
             k1=0;
@@ -90,6 +98,17 @@ public class GameActivity extends AppCompatActivity {
             timer = new Timer();
             incrementor = new Incrementor(timer, isCounting);
             incrementor.startTimer();
+
+            final Handler handler = new Handler();
+            final int delay = 1; //milliseconds
+
+            handler.postDelayed(new Runnable(){
+                public void run(){
+                    //do something
+                    
+                    handler.postDelayed(this, delay);
+                }
+            }, delay);
 
 
         } catch (IOException e) {
@@ -191,11 +210,8 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private void playButtonSoundEffect(){
-        //TODO figure out how to play sound from res\raw\normalhitclap.wav
-    }
-
     private void tickUpdate(){
+        Log.d(TAG,"Tick update called");
         Chronometer c = new Chronometer(this);
         final double millis = c.getBase();
         c.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener()
@@ -203,7 +219,9 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer chronometer)
             {
+                moveNote(g.getScrollSpeed());
                 if(g.isNoteAppearing(k1)){
+                    Log.d(TAG,"Tick occured");
                     createNote(64);
                     moveNote(g.getScrollSpeed());
                 }
