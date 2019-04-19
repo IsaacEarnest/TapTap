@@ -38,19 +38,19 @@ public class MainActivity extends AppCompatActivity {
     private void initOnClickListeners() {
         songB1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                song = "SONG1";
+                song = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
                 openGameActivity();
             }
         });
         songB2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                song = "SONG2";
+                song = "Songs/Crystalia/Crystalia [Hyper].osu";
                 openGameActivity();
             }
         });
     }
     private void openGameActivity() {
-        Log.d(TAG,"openGameActivity: Opening game activity");
+        Log.d(TAG,"openGameActivity: Opening game activity"+song);
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SONGNAME",song);
         startActivity(intent);

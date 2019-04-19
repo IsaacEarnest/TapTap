@@ -26,7 +26,6 @@ public class Incrementor {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
             }
         }, 0, interval);
     }
