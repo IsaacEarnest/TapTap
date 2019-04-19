@@ -1,11 +1,8 @@
 package com.example.osumania;
 
-import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Chronometer;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -77,16 +74,16 @@ public class Game {
         if(pos.equals(keys.firstK)){
             if(first!=null)
             for (Integer i:first) {
-                if(i-millis<greatMargin){
+                if(Math.abs(i-millis)<greatMargin){
                     first.remove(i);
                     return "great";
-                }else if(i-millis<okMargin){
+                }else if(Math.abs(i-millis)<okMargin){
                     first.remove(i);
                     return "ok";
-                }else if (i-millis<badMargin){
+                }else if (Math.abs(i-millis)<badMargin){
                     first.remove(i);
                     return "bad";
-                }else if (i-millis<=missMargin){
+                }else if (Math.abs(i-millis)<=missMargin){
                     first.remove(i);
                     return "miss";
                 }
@@ -94,16 +91,16 @@ public class Game {
         }else if(pos.equals(keys.secondK)){
             if(second!=null)
             for (Integer i:second) {
-                if(i-millis<greatMargin){
+                if(Math.abs(i-millis)<greatMargin){
                     second.remove(i);
                     return "great";
-                }else if(i-millis<okMargin){
+                }else if(Math.abs(i-millis)<okMargin){
                     second.remove(i);
                     return "ok";
-                }else if (i-millis<badMargin){
+                }else if (Math.abs(i-millis)<badMargin){
                     second.remove(i);
                     return "bad";
-                }else if (i-millis<=missMargin){
+                }else if (Math.abs(i-millis)<=missMargin){
                     second.remove(i);
                     return "miss";
                 }
@@ -111,16 +108,16 @@ public class Game {
         }else if(pos.equals(keys.thirdK)){
             if(third!=null)
             for (Integer i:third) {
-                if(i-millis<greatMargin){
+                if(Math.abs(i-millis)<greatMargin){
                     third.remove(i);
                     return "great";
-                }else if(i-millis<okMargin){
+                }else if(Math.abs(i-millis)<okMargin){
                     third.remove(i);
                     return "ok";
-                }else if (i-millis<badMargin){
+                }else if (Math.abs(i-millis)<badMargin){
                     third.remove(i);
                     return "bad";
-                }else if (i-millis<=missMargin){
+                }else if (Math.abs(i-millis)<=missMargin){
                     third.remove(i);
                     return "miss";
                 }
@@ -128,16 +125,16 @@ public class Game {
         }else if(pos.equals(keys.fourthK)){
             if(fourth!=null)
             for (Integer i:fourth) {
-                if(i-millis<greatMargin){
+                if(Math.abs(i-millis)<greatMargin){
                     fourth.remove(i);
                     return "great";
-                }else if(i-millis<okMargin){
+                }else if(Math.abs(i-millis)<okMargin){
                     fourth.remove(i);
                     return "ok";
-                }else if (i-millis<badMargin){
+                }else if (Math.abs(i-millis)<badMargin){
                     fourth.remove(i);
                     return "bad";
-                }else if (i-millis<=missMargin){
+                }else if (Math.abs(i-millis)<=missMargin){
                     fourth.remove(i);
                     return "miss";
                 }
@@ -177,6 +174,8 @@ public class Game {
     public int getScrollSpeed(){
         return scrollSpeed;
     }
-
+    public boolean isNoteAppearing(int num){
+        return true;
+    }
 
 }
