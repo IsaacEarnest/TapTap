@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //toTestSoundButton();
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
         initOnClickListeners();
-        toTestSoundButton();
+
 
     }
 
@@ -55,18 +55,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void toTestSoundButton() {
+    /*private void toTestSoundButton() {
         goToTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toSoundTestActivity();
             }
         });
-    }
+    }*/
 
-    private void toSoundTestActivity() {
+    /*private void toSoundTestActivity() {
         Intent forwardIntent = new Intent(MainActivity.this, SoundTestActivity.class);
         startActivity(forwardIntent);
-    }
+    }*/
 
 }
