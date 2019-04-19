@@ -1,5 +1,7 @@
 package com.example.osumania;
 
+import android.widget.ImageView;
+
 public class Node {
     private enum Note{
         LEFT, MIDDLELEFT, MIDDLERIGHT, RIGHT
@@ -7,18 +9,20 @@ public class Node {
     private int nodeX;
     private int nodeY;
     private int milliseconds;
-    private int moveDown = 2;
+    private ImageView icon;
 
-    public Node(int x, int y, int milliseconds){
+    public Node(int x, int y, int milliseconds, ImageView icon){
         this.nodeX = x;
         this.nodeY = y;
         this.milliseconds = milliseconds;
+        this.icon = icon;
     }
 
     //move node down
     public void moveNodeDown(){
-        nodeY += moveDown;
+        icon.setTranslationY(2);
     }
+    public int getNodeX(){ return nodeX; }
 
     public Note checkNoteValue(int xValue){ //64, 192, 320, 448
         Note notePosition = Note.LEFT;

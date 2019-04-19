@@ -12,12 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.ArrayList;
+
+import java.util.Timer;
+
 
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
@@ -37,6 +40,11 @@ public class GameActivity extends AppCompatActivity {
     int k1,k2,k3,k4;
     Chronometer c;
     ArrayList<ImageView> notes;
+
+    Timer timer;
+    boolean isCounting;
+    Incrementor incrementor;
+
 
     //final MediaPlayer soundEffect = MediaPlayer.create(this, );
     //TODO: find out how to access file with sound effects for the URI for MediaPLayer
@@ -64,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
             mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
             mpSong.start();
             comboCount = 0;
+
             c = new Chronometer(this);
             c.setBase(SystemClock.elapsedRealtime());
             c.start();
@@ -78,6 +87,10 @@ public class GameActivity extends AppCompatActivity {
             createNote(320);
             createNote(448);
             moveNote(g.getScrollSpeed());
+
+            incrementor = new Incrementor(timer, isCounting);
+            incrementor.startTimer();
+
 
         } catch (IOException e) {
             Log.e("GameActivity",e.getMessage(), e);
@@ -94,6 +107,7 @@ public class GameActivity extends AppCompatActivity {
         else comboCount = 0;
         combo.setText(""+comboCount);
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         key1.setOnTouchListener(new View.OnTouchListener() {
