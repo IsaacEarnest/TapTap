@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
             createNote(320);
             createNote(448);
             moveNote(g.getScrollSpeed());
-
+            timer = new Timer();
             incrementor = new Incrementor(timer, isCounting);
             incrementor.startTimer();
 

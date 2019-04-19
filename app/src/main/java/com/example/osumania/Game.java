@@ -55,8 +55,9 @@ public class Game {
     public void spawnIcon(int noteHitTime, ArrayList column){
         int noteSpawnTime = noteHitTime - scrollSpeed;
         for(int i = 0; i<=column.size(); i++) {
-            if(
-            Node node = new Node(, 0, noteSpawnTime, )
+            if(true){
+
+            }
         }
     }
     public void hit(keys pos){
