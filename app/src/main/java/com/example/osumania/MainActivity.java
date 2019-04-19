@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
-        goToTestButton = findViewById(R.id.goToTestButton);
         initOnClickListeners();
         toTestSoundButton();
 
