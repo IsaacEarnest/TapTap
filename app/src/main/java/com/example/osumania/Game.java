@@ -1,5 +1,6 @@
 package com.example.osumania;
 
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Chronometer;
 
@@ -50,6 +51,7 @@ public class Game {
         scrollSpeed++;
     }
     public void startSong(){
+
         //TODO start mp3
         StartTime = System.currentTimeMillis();
     }
@@ -163,27 +165,21 @@ public class Game {
         String thirdRow = "320";
         String fourthRow = "448";
 
-            //TODO have actual error handling for fileNotFound
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             Log.d(TAG, "File open for business!");
             while (!reader.readLine().equals("[HitObjects]")) {
 
             }
             //Adding Notes
-            //TODO ask what path to use to get to res\songs\(specificsong)\*.osu file
             while ((line = reader.readLine()) != null) {
                 if (line.split(",")[0].equals(firstRow)) {
                     first.add(Integer.parseInt(line.split(",")[2]));
-                    Log.d(TAG,""+first);
-                }else if (line.split(",")[3].equals(secondRow)) {
+                }if (line.split(",")[0].equals(secondRow)) {
                     second.add(Integer.parseInt(line.split(",")[2]));
-                    Log.d(TAG,""+second);
-                }else if (line.split(",")[3].equals(thirdRow)) {
+                }if (line.split(",")[0].equals(thirdRow)) {
                     third.add(Integer.parseInt(line.split(",")[2]));
-                    Log.d(TAG,""+third);
-                }else if (line.split(",")[3].equals(fourthRow)) {
+                }if (line.split(",")[0].equals(fourthRow)) {
                     fourth.add(Integer.parseInt(line.split(",")[2]));
-                    Log.d(TAG,""+fourth);
                     }
             }
     }

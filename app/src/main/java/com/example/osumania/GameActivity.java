@@ -32,6 +32,12 @@ public class GameActivity extends AppCompatActivity {
     Timer timer;
     boolean isCounting;
     Incrementor incrementor;
+    MediaPlayer mp, mp2,mp3,mp4;
+
+    //final MediaPlayer soundEffect = MediaPlayer.create(this, );
+    //TODO: find out how to access file with sound effects for the URI for MediaPLayer
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,11 @@ public class GameActivity extends AppCompatActivity {
             String song = extras.getString("SONGNAME");
             InputStream songInput = getAssets().open("Songs/Asu no Yozora/Asu no Yozora[Hard].osu");
             g = new Game(songInput);
-
+            mp = MediaPlayer.create(this, R.raw.normalhitclap);
+            mp2 = MediaPlayer.create(this, R.raw.normalhitclap);
+            mp3 = MediaPlayer.create(this, R.raw.normalhitclap);
+            mp4 = MediaPlayer.create(this, R.raw.normalhitclap);
+            mp.start();
             comboCount = 0;
             incrementor = new Incrementor(timer, isCounting);
             incrementor.startTimer();
@@ -70,10 +80,13 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     left.setImageResource(R.drawable.key_leftd);
+                    MediaPlayer mp = MediaPlayer.create(GameActivity.this, R.raw.normalhitclap);
+                    mp.start();
                     g.hit(firstK);
                     updateCombo(g.wasHit(firstK));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setImageResource(R.drawable.key_left);
+
                 }
 
                 return true;
@@ -84,6 +97,7 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     up.setImageResource(R.drawable.key_upd);
+                    mp2.start();
                     g.hit(secondK);
                     updateCombo(g.wasHit(secondK));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -98,6 +112,7 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     down.setImageResource(R.drawable.key_downd);
+                    mp3.start();
                     g.hit(thirdK);
                     updateCombo(g.wasHit(thirdK));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -112,6 +127,7 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     right.setImageResource(R.drawable.key_rightd);
+                    mp4.start();
                     g.hit(fourthK);
                     updateCombo(g.wasHit(fourthK));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
