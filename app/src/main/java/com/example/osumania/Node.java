@@ -7,7 +7,7 @@ public class Node {
         LEFT, MIDDLELEFT, MIDDLERIGHT, RIGHT
     }
     private int nodeX;
-    private int nodeY;
+    private int nodeY = 0;
     private int milliseconds;
     private ImageView icon;
 
