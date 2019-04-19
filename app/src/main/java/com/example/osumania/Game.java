@@ -57,12 +57,6 @@ public class Game {
     }
     public void spawnIcon(int noteHitTime, int position){
         int noteSpawnTime = noteHitTime - scrollSpeed;
-
-        for(int i = 0; i<=column.size(); i++) {
-            if (true) {
-
-            }
-        }
         if (position == 64){
             Node node = new Node(position, 0, noteSpawnTime, left);
         }else if (position == 192){

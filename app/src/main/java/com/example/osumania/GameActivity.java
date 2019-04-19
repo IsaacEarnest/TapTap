@@ -45,12 +45,6 @@ public class GameActivity extends AppCompatActivity {
     boolean isCounting;
     Incrementor incrementor;
 
-
-    //final MediaPlayer soundEffect = MediaPlayer.create(this, );
-    //TODO: find out how to access file with sound effects for the URI for MediaPLayer
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
