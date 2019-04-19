@@ -44,16 +44,23 @@ public class Game {
         parseSongFile(input);
 
     }
+    public ArrayList getFirstRow(){
+        return first;
+    }
+    public ArrayList getSecondRow(){
+        return second;
+    }
+    public ArrayList getThirdRow(){
+        return third;
+    }
+    public ArrayList getFourthRow(){
+        return fourth;
+    }
     public void increaseScrollSpeed(){
         scrollSpeed++;
     }
     public void decreaseScrollSpeed(){
         scrollSpeed--;
-    }
-    public void startSong(){
-
-        //TODO start mp3
-        StartTime = System.currentTimeMillis();
     }
     public void spawnIcon(int noteHitTime, int position){
         int noteSpawnTime = noteHitTime - scrollSpeed;

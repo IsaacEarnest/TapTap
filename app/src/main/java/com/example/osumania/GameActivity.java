@@ -45,6 +45,11 @@ public class GameActivity extends AppCompatActivity {
     Timer timer;
     boolean isCounting;
     Incrementor incrementor;
+    int mil;
+    String crystalia;
+    String asu;
+    int crystaliaSpd;
+    int asuSpd;
 
 
     //final MediaPlayer soundEffect = MediaPlayer.create(this, );
@@ -65,15 +70,16 @@ public class GameActivity extends AppCompatActivity {
             //root of the problem for finding what file to parse
             String song = extras.getString("SONGNAME");
             InputStream songInput = getAssets().open(song);
-
+            asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
+            crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
             g = new Game(songInput);
             mp = MediaPlayer.create(this, R.raw.normalhitclap);
             mp2 = MediaPlayer.create(this, R.raw.normalhitclap);
             mp3 = MediaPlayer.create(this, R.raw.normalhitclap);
             mp4 = MediaPlayer.create(this, R.raw.normalhitclap);
-            if(song.equals("Songs/Asu no Yozora/Asu no Yozora[Hard].osu"))
+            if(song.equals(asu))
                 mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
-            if(song.equals("Songs/Crystalia/Crystalia [Hyper].osu"))
+            if(song.equals(crystalia))
                 mpSong = MediaPlayer.create(this,R.raw.crystalia);
             mpSong.start();
             comboCount = 0;
@@ -84,28 +90,59 @@ public class GameActivity extends AppCompatActivity {
 
 
             c.start();
-            tickUpdate();
             k1=0;
             k2=0;
             k3=0;
             k4=0;
             notes = new ArrayList<>();
-            createNote(64);
-            createNote(192);
-            createNote(320);
-            createNote(448);
             moveNote(g.getScrollSpeed());
             timer = new Timer();
             incrementor = new Incrementor(timer, isCounting);
             incrementor.startTimer();
+            mil=0;
 
+            final ArrayList<Integer> lefts = g.getFirstRow();
+            final ArrayList<Integer> ups = g.getSecondRow();
+            final ArrayList<Integer> downs = g.getThirdRow();
+            final ArrayList<Integer> rights = g.getFourthRow();
+            crystaliaSpd = 18;
+            asuSpd = 17;
+            final double creationSpeed;
+            if(song.equals(asu))
+            creationSpeed = asuSpd;
+            else {
+                creationSpeed = crystaliaSpd;
+            }
+
+                    //17 CS to 31 SS;
             final Handler handler = new Handler();
-            final int delay = 1; //milliseconds
-
+            final int delay = 0; //milliseconds
+            Log.d(TAG,""+ups.get(0));
             handler.postDelayed(new Runnable(){
                 public void run(){
                     //do something
-                    
+                    if(lefts.size()>1||ups.size()>1||downs.size()>1||rights.size()>1)
+                        handler.removeCallbacksAndMessages(null);
+
+                    mil++;
+                    if(Math.floor(lefts.get(0)/creationSpeed)==mil){
+                        createNote(64);
+                        lefts.remove(0);
+
+                    }
+                    if(Math.floor(ups.get(0)/creationSpeed)==mil){
+                        createNote(192);
+                        ups.remove(0);
+                    }
+                    if(Math.floor(downs.get(0)/creationSpeed)==mil){
+                        createNote(320);
+                        downs.remove(0);
+                    }
+                    if(Math.floor(rights.get(0)/creationSpeed)==mil){
+                        createNote(448);
+                        rights.remove(0);
+                    }
+                    moveNote(g.getScrollSpeed());
                     handler.postDelayed(this, delay);
                 }
             }, delay);
@@ -119,6 +156,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         mpSong.stop();
+
     }
 
     private void updateCombo(boolean wasHit){
@@ -139,8 +177,6 @@ public class GameActivity extends AppCompatActivity {
                     updateCombo(g.wasHit(firstK));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setImageResource(R.drawable.key_left);
-                    //TODO THIS
-                    moveNote(g.getScrollSpeed());
 
 
                 }
@@ -210,24 +246,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private void tickUpdate(){
-        Log.d(TAG,"Tick update called");
-        Chronometer c = new Chronometer(this);
-        final double millis = c.getBase();
-        c.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener()
-        {
-            @Override
-            public void onChronometerTick(Chronometer chronometer)
-            {
-                moveNote(g.getScrollSpeed());
-                if(g.isNoteAppearing(k1)){
-                    Log.d(TAG,"Tick occured");
-                    createNote(64);
-                    moveNote(g.getScrollSpeed());
-                }
-            }
-        });
-    }
+
     private void moveNote(int speed){
         for (ImageView i:notes
              ) {
@@ -235,6 +254,7 @@ public class GameActivity extends AppCompatActivity {
 
         }
     }
+
     private void createNote(int pos){
         final ConstraintLayout cl = findViewById(R.id.cl);
         ImageView iv = new ImageView(getApplicationContext());
@@ -245,6 +265,8 @@ public class GameActivity extends AppCompatActivity {
                 lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 iv.setLayoutParams(lp);
                 cl.addView(iv);
+                iv.setY(-1000);
+
 
 
                 Log.d(TAG,"created note");
@@ -256,6 +278,7 @@ public class GameActivity extends AppCompatActivity {
                 lp.setMargins(4,0,100,100);
                 cl.addView(iv);
                 iv.setX(240);
+                iv.setY(-1000);
                 Log.d(TAG,"created note");
                 break;
             case 320:
@@ -264,6 +287,7 @@ public class GameActivity extends AppCompatActivity {
                 iv.setLayoutParams(lp);
                 cl.addView(iv);
                 iv.setX(500);
+                iv.setY(-1000);
                 Log.d(TAG,"created note");
                 break;
             case 448:
@@ -272,6 +296,7 @@ public class GameActivity extends AppCompatActivity {
                 iv.setLayoutParams(lp);
                 cl.addView(iv);
                 iv.setX(750);
+                iv.setY(-1000);
                 Log.d(TAG,"created note");
                 break;
 
