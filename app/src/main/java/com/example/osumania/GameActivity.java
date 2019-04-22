@@ -50,6 +50,9 @@ public class GameActivity extends AppCompatActivity {
     String asu;
     int crystaliaSpd;
     int asuSpd;
+    int startTime;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,6 @@ public class GameActivity extends AppCompatActivity {
             initOnTouchListeners();
             Bundle extras = getIntent().getExtras();
 
-            //root of the problem for finding what file to parse
             String song = extras.getString("SONGNAME");
             InputStream songInput = getAssets().open(song);
             asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
@@ -76,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
             if(song.equals(crystalia))
                 mpSong = MediaPlayer.create(this,R.raw.crystalia);
             mpSong.start();
+            startTime = (int)System.currentTimeMillis();
             comboCount = 0;
 
             c = new Chronometer(this);
@@ -90,49 +93,42 @@ public class GameActivity extends AppCompatActivity {
             k4=0;
             notes = new ArrayList<>();
             moveNote(g.getScrollSpeed());
-            timer = new Timer();
-            incrementor = new Incrementor(timer, isCounting);
-            incrementor.startTimer();
-            mil=0;
+
 
             final ArrayList<Integer> lefts = g.getFirstRow();
             final ArrayList<Integer> ups = g.getSecondRow();
             final ArrayList<Integer> downs = g.getThirdRow();
             final ArrayList<Integer> rights = g.getFourthRow();
-            crystaliaSpd = 18;
-            asuSpd = 17;
-            final double creationSpeed;
-            if(song.equals(asu))
-            creationSpeed = asuSpd;
-            else {
-                creationSpeed = crystaliaSpd;
-            }
 
-                    //17 CS to 31 SS;
+
+                    //18 CS to 31 SS;
             final Handler handler = new Handler();
-            final int delay = 0; //milliseconds
+            final int delay = 10; //milliseconds
             Log.d(TAG,""+ups.get(0));
+
             handler.postDelayed(new Runnable(){
                 public void run(){
                     //do something
+                    int curTimeMil = (int)(System.currentTimeMillis())-startTime;
+                    int spd = 14*g.getScrollSpeed();
                     if(lefts.size()>1||ups.size()>1||downs.size()>1||rights.size()>1)
                         handler.removeCallbacksAndMessages(null);
 
-                    mil++;
-                    if(Math.floor(lefts.get(0)/creationSpeed)==mil){
+                    Log.d(TAG,""+curTimeMil);
+                    if(lefts.get(0)<=curTimeMil+spd){
                         createNote(64);
                         lefts.remove(0);
 
                     }
-                    if(Math.floor(ups.get(0)/creationSpeed)==mil){
+                    if(ups.get(0)<=curTimeMil+spd){
                         createNote(192);
                         ups.remove(0);
                     }
-                    if(Math.floor(downs.get(0)/creationSpeed)==mil){
+                    if(downs.get(0)<=curTimeMil+spd){
                         createNote(320);
                         downs.remove(0);
                     }
-                    if(Math.floor(rights.get(0)/creationSpeed)==mil){
+                    if(rights.get(0)<=curTimeMil+spd){
                         createNote(448);
                         rights.remove(0);
                     }
@@ -169,12 +165,13 @@ public class GameActivity extends AppCompatActivity {
                     mp.start();
                     g.hit(firstK);
                     updateCombo(g.wasHit(firstK));
+                    if(g.wasHit(firstK)){
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setImageResource(R.drawable.key_left);
 
 
                 }
-
                 return true;
             }
         });
@@ -186,6 +183,8 @@ public class GameActivity extends AppCompatActivity {
                     mp2.start();
                     g.hit(secondK);
                     updateCombo(g.wasHit(secondK));
+                    if(g.wasHit(secondK)){
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     up.setImageResource(R.drawable.key_up);
                 }
@@ -201,6 +200,8 @@ public class GameActivity extends AppCompatActivity {
                     mp3.start();
                     g.hit(thirdK);
                     updateCombo(g.wasHit(thirdK));
+                    if(g.wasHit(thirdK)){
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     down.setImageResource(R.drawable.key_down);
                 }
@@ -216,6 +217,8 @@ public class GameActivity extends AppCompatActivity {
                     mp4.start();
                     g.hit(fourthK);
                     updateCombo(g.wasHit(fourthK));
+                    if(g.wasHit(fourthK)){
+                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     right.setImageResource(R.drawable.key_right);
                 }
@@ -261,9 +264,6 @@ public class GameActivity extends AppCompatActivity {
                 cl.addView(iv);
                 iv.setY(-1000);
 
-
-
-                Log.d(TAG,"created note");
                 break;
             case 192:
                 iv.setImageDrawable(getDrawable(R.drawable.up));
@@ -273,7 +273,6 @@ public class GameActivity extends AppCompatActivity {
                 cl.addView(iv);
                 iv.setX(240);
                 iv.setY(-1000);
-                Log.d(TAG,"created note");
                 break;
             case 320:
                 iv.setImageDrawable(getDrawable(R.drawable.down));
@@ -282,7 +281,6 @@ public class GameActivity extends AppCompatActivity {
                 cl.addView(iv);
                 iv.setX(500);
                 iv.setY(-1000);
-                Log.d(TAG,"created note");
                 break;
             case 448:
                 iv.setImageDrawable(getDrawable(R.drawable.right));
@@ -291,7 +289,6 @@ public class GameActivity extends AppCompatActivity {
                 cl.addView(iv);
                 iv.setX(750);
                 iv.setY(-1000);
-                Log.d(TAG,"created note");
                 break;
 
         }notes.add(iv);

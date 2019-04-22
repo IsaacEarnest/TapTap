@@ -28,7 +28,7 @@ public class Game {
     private ImageView up, down, left, right;
 
     public Game(InputStream input) throws IOException {
-        this.scrollSpeed = 31;
+        this.scrollSpeed = 50;
 
         greatMargin = 20;
         okMargin = 40;
