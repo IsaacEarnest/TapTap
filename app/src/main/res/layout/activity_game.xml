@@ -8,36 +8,36 @@
     android:id = "@+id/cl"
     tools:context=".GameActivity">
 
+
+    <view
+        android:id="@+id/column_group"
+        class="android.support.constraint.Group"
+        id="@+id/view"
+        android:layout_width="400dp"
+        android:layout_height="724dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-
         android:id="@+id/key1"
-
-
         android:layout_width="100dp"
         android:layout_height="75dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-
         android:text="1"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-
         android:id="@+id/key2"
-
-
         android:layout_width="100dp"
         android:layout_height="75dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-
-
         android:text="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/key1"
@@ -45,18 +45,12 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-
         android:id="@+id/key3"
-
-
         android:layout_width="100dp"
         android:layout_height="75dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-
         android:text="3"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/key4"
         app:layout_constraintStart_toEndOf="@+id/key2"
@@ -64,10 +58,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-
         android:id="@+id/key4"
-
-
         android:layout_width="100dp"
         android:layout_height="75dp"
         android:layout_marginTop="8dp"
@@ -82,10 +73,7 @@
         android:id="@+id/left"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="4dp"
-
-
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/key1"
@@ -99,11 +87,8 @@
         android:id="@+id/up"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-
-
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-
         app:layout_constraintBottom_toTopOf="@+id/key2"
         app:layout_constraintStart_toEndOf="@+id/left"
         app:layout_constraintTop_toTopOf="parent"
@@ -153,5 +138,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.453"
         tools:text="0" />
+
 
 </android.support.constraint.ConstraintLayout>
