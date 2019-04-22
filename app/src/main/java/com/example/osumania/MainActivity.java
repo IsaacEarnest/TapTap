@@ -12,12 +12,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
-    public Button testSongButton;
-    public TextView testSongView;
     private String song;
-    public Button goToTestButton;
-
-
 
     private final String TAG = "MainActivity";
     Button songB1, songB2;
@@ -48,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void openGameActivity() {
         Log.d(TAG,"openGameActivity: Opening game activity"+song);
         Intent intent = new Intent(this, GameActivity.class);
@@ -55,18 +51,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /*private void toTestSoundButton() {
-        goToTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toSoundTestActivity();
-            }
-        });
-    }*/
-
-    /*private void toSoundTestActivity() {
-        Intent forwardIntent = new Intent(MainActivity.this, SoundTestActivity.class);
-        startActivity(forwardIntent);
-    }*/
 
 }
