@@ -22,7 +22,7 @@ public class Game {
     }
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Node> nodes;
-    private double StartTime;
+    private double startTime;
     private double greatMargin,okMargin,badMargin,missMargin;
     private Chronometer chronometer;
     private ImageView up, down, left, right;
@@ -30,16 +30,18 @@ public class Game {
     public Game(InputStream input) throws IOException {
         this.scrollSpeed = 50;
 
-        greatMargin = 20;
-        okMargin = 40;
-        badMargin = 60;
-        missMargin = 150;
+        greatMargin = 200;
+        okMargin = 400;
+        badMargin = 600;
+        missMargin = 1500;
 
         first = new ArrayList<>();
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
         nodes = new ArrayList<>();
+
+        startTime = System.currentTimeMillis();
 
         parseSongFile(input);
 
@@ -80,6 +82,7 @@ public class Game {
 
     }
     public boolean wasHit(keys pos){
+        Log.d(TAG,findHitAcc(pos));
         switch (pos) {
             case firstK:
                 return !findHitAcc(pos).equals("miss");
@@ -96,10 +99,12 @@ public class Game {
     }
     private String findHitAcc(keys pos){
 
-        double millis=System.currentTimeMillis()-StartTime;
+        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed;
+        Log.d(TAG,"millis= "+millis);
         if(pos.equals(keys.firstK)){
             if(first!=null)
             for (Integer i:first) {
+
                 if(Math.abs(i-millis)<greatMargin){
                     first.remove(i);
                     return "great";
@@ -199,9 +204,6 @@ public class Game {
     }
     public int getScrollSpeed(){
         return scrollSpeed;
-    }
-    public boolean isNoteAppearing(int num){
-        return true;
     }
 
 }

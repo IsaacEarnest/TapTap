@@ -3,7 +3,6 @@ package com.example.osumania;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import java.io.InputStream;
 
 import java.util.ArrayList;
 
-import java.util.Timer;
 
 
 import static com.example.osumania.Game.keys.firstK;
@@ -37,19 +35,12 @@ public class GameActivity extends AppCompatActivity {
     Game g;
     TextView combo;
     int comboCount;
-    MediaPlayer mp, mp2,mp3,mp4, mpSong;
+    MediaPlayer mpSong;
     int k1,k2,k3,k4;
-    Chronometer c;
     ArrayList<ImageView> notes;
 
-    Timer timer;
-    boolean isCounting;
-    Incrementor incrementor;
-    int mil;
     String crystalia;
     String asu;
-    int crystaliaSpd;
-    int asuSpd;
     int startTime;
 
 
@@ -69,10 +60,6 @@ public class GameActivity extends AppCompatActivity {
             asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
             crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
             g = new Game(songInput);
-            mp = MediaPlayer.create(this, R.raw.normalhitclap);
-            mp2 = MediaPlayer.create(this, R.raw.normalhitclap);
-            mp3 = MediaPlayer.create(this, R.raw.normalhitclap);
-            mp4 = MediaPlayer.create(this, R.raw.normalhitclap);
             if(song.equals(asu))
                 mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
             if(song.equals(crystalia))
@@ -81,12 +68,6 @@ public class GameActivity extends AppCompatActivity {
             startTime = (int)System.currentTimeMillis();
             comboCount = 0;
 
-            c = new Chronometer(this);
-            c.setBase(SystemClock.elapsedRealtime());
-            Log.d(TAG,""+c.getBase());
-
-
-            c.start();
             k1=0;
             k2=0;
             k3=0;
@@ -94,14 +75,11 @@ public class GameActivity extends AppCompatActivity {
             notes = new ArrayList<>();
             moveNote(g.getScrollSpeed());
 
-
             final ArrayList<Integer> lefts = g.getFirstRow();
             final ArrayList<Integer> ups = g.getSecondRow();
             final ArrayList<Integer> downs = g.getThirdRow();
             final ArrayList<Integer> rights = g.getFourthRow();
 
-
-                    //18 CS to 31 SS;
             final Handler handler = new Handler();
             final int delay = 10; //milliseconds
             Log.d(TAG,""+ups.get(0));
@@ -150,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateCombo(boolean wasHit){
+
         if(wasHit) comboCount++;
         else comboCount = 0;
         combo.setText(""+comboCount);
@@ -162,11 +141,8 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     left.setImageResource(R.drawable.key_leftd);
-                    mp.start();
-                    g.hit(firstK);
+
                     updateCombo(g.wasHit(firstK));
-                    if(g.wasHit(firstK)){
-                    }
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     left.setImageResource(R.drawable.key_left);
 
@@ -180,7 +156,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     up.setImageResource(R.drawable.key_upd);
-                    mp2.start();
                     g.hit(secondK);
                     updateCombo(g.wasHit(secondK));
                     if(g.wasHit(secondK)){
@@ -197,7 +172,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     down.setImageResource(R.drawable.key_downd);
-                    mp3.start();
                     g.hit(thirdK);
                     updateCombo(g.wasHit(thirdK));
                     if(g.wasHit(thirdK)){
@@ -214,7 +188,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     right.setImageResource(R.drawable.key_rightd);
-                    mp4.start();
                     g.hit(fourthK);
                     updateCombo(g.wasHit(fourthK));
                     if(g.wasHit(fourthK)){
