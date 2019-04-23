@@ -8,13 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import android.widget.TextView;
-
 
 public class MainActivity extends AppCompatActivity {
     private String song;
-
-
 
     private final String TAG = "MainActivity";
     Button songB1, songB2;
@@ -23,11 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
         initOnClickListeners();
-
     }
 
     private void initOnClickListeners() {
@@ -44,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void openGameActivity() {
         Log.d(TAG,"openGameActivity: Opening game activity"+song);
         Intent intent = new Intent(this, GameActivity.class);

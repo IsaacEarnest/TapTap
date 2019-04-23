@@ -86,7 +86,6 @@ public class Game {
     private String findHitAcc(keys pos){
 
         double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
-        Log.d(TAG,"millis= "+millis);
         if(pos.equals(keys.firstK)){
             if(first!=null)
             for (Integer i:first) {
@@ -160,8 +159,6 @@ public class Game {
                 else Log.d(TAG,"Late by "+(i-millis));
             }
         }
-        //return "miss";
-
         return "test";
     }
 
