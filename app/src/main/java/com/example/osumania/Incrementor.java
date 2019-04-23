@@ -8,8 +8,8 @@ public class Incrementor {
 
     private Timer timer;
     private boolean isRunning;
-    ArrayList<Node> nodes;
-    private Node note;
+    ArrayList<Notes> notes;
+    private Notes note;
 
     public Incrementor(Timer timer, boolean isRunning){
         this.timer = timer;

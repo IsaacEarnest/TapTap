@@ -10,16 +10,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.ArrayList;
-
-
 
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
@@ -36,13 +30,13 @@ public class GameActivity extends AppCompatActivity {
     TextView combo;
     int comboCount;
     MediaPlayer mpSong;
-    int k1,k2,k3,k4;
     ArrayList<ImageView> notes;
-
+    ArrayList<Integer> lefts, ups, downs, rights;
     String crystalia;
     String asu;
     int startTime;
-
+    int first,second,third,fourth;
+    Notes n;
 
 
     @Override
@@ -53,72 +47,83 @@ public class GameActivity extends AppCompatActivity {
             setUpComponents();
 
             initOnTouchListeners();
-            Bundle extras = getIntent().getExtras();
-
-            String song = extras.getString("SONGNAME");
-            InputStream songInput = getAssets().open(song);
-            asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
-            crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
-            g = new Game(songInput);
-            if(song.equals(asu))
-                mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
-            if(song.equals(crystalia))
-                mpSong = MediaPlayer.create(this,R.raw.crystalia);
-            mpSong.start();
+            startSong();
             startTime = (int)System.currentTimeMillis();
             comboCount = 0;
-
-            k1=0;
-            k2=0;
-            k3=0;
-            k4=0;
+            first=64;
+            second=192;
+            third=320;
+            fourth=448;
             notes = new ArrayList<>();
-            moveNote(g.getScrollSpeed());
 
-            final ArrayList<Integer> lefts = g.getFirstRow();
-            final ArrayList<Integer> ups = g.getSecondRow();
-            final ArrayList<Integer> downs = g.getThirdRow();
-            final ArrayList<Integer> rights = g.getFourthRow();
-            //initHandler();
-            final Handler handler = new Handler();
-            final int delay = 1; //milliseconds
-            //Log.d(TAG,""+ups.get(0));
+            lefts = g.getFirstRow();
+            ups = g.getSecondRow();
+            downs = g.getThirdRow();
+            rights = g.getFourthRow();
 
-            handler.postDelayed(new Runnable(){
-                public void run(){
-                    int curTimeMil = (int)(System.currentTimeMillis())-startTime;
-                    int spd = 14*g.getScrollSpeed();
-                    if(lefts.size()<1||ups.size()<1||downs.size()<1||rights.size()<1)
-                        handler.removeCallbacksAndMessages(null);
-
-                    Log.d(TAG,""+curTimeMil);
-                    if(lefts.get(0)<=curTimeMil+spd){
-                        createNote(64);
-                        lefts.remove(0);
-
-                    }
-                    if(ups.get(0)<=curTimeMil+spd){
-                        createNote(192);
-                        ups.remove(0);
-                    }
-                    if(downs.get(0)<=curTimeMil+spd){
-                        createNote(320);
-                        downs.remove(0);
-                    }
-                    if(rights.get(0)<=curTimeMil+spd){
-                        createNote(448);
-                        rights.remove(0);
-                    }
-                    moveNote(g.getScrollSpeed());
-                    //cleanOffscreenNotes();
-                    handler.postDelayed(this, delay);
-                }
-            }, delay);
-
-
-        } catch (IOException e) {
+            initNotes();
+            initHandler();
+        } catch (Exception e) {
             Log.e("GameActivity",e.getMessage(), e);
         }
+    }
+    private void initNotes(){
+        ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
+        allNotes.add(g.getFirstRow());
+        allNotes.add(g.getSecondRow());
+        allNotes.add(g.getThirdRow());
+        allNotes.add(g.getFourthRow());
+        n = new Notes(allNotes);
+    }
+    private void startSong()throws Exception{
+        Bundle extras = getIntent().getExtras();
+
+        String song = extras.getString("SONGNAME");
+        InputStream songInput = getAssets().open(song);
+        asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
+        crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
+        g = new Game(songInput);
+        if(song.equals(asu))
+            mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
+        if(song.equals(crystalia))
+            mpSong = MediaPlayer.create(this,R.raw.crystalia);
+        mpSong.start();
+    }
+    private void initHandler(){
+        final Handler handler = new Handler();
+        final int delay = 1; //milliseconds
+        //Log.d(TAG,""+ups.get(0));
+
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                int curTimeMil = (int)(System.currentTimeMillis())-startTime;
+                int spd = 14*g.getScrollSpeed();
+                if(lefts.size()<1||ups.size()<1||downs.size()<1||rights.size()<1)
+                    handler.removeCallbacksAndMessages(null);
+
+                Log.d(TAG,""+curTimeMil);
+                if(n.getCurrentNote(first)<=curTimeMil+spd){
+                    createNote(first);
+                    n.toNextNote(first);
+
+                }
+                if(n.getCurrentNote(second)<=curTimeMil+spd){
+                    createNote(second);
+                    n.toNextNote(second);
+                }
+                if(n.getCurrentNote(third)<=curTimeMil+spd){
+                    createNote(third);
+                    n.toNextNote(third);
+                }
+                if(n.getCurrentNote(fourth)<=curTimeMil+spd){
+                    createNote(fourth);
+                    n.toNextNote(fourth);
+                }
+                moveNote(g.getScrollSpeed());
+                //cleanOffscreenNotes();
+                handler.postDelayed(this, delay);
+            }
+        }, delay);
     }
     @Override
     protected void onPause(){
@@ -156,7 +161,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     up.setImageResource(R.drawable.key_upd);
-                    g.hit(secondK);
                     updateCombo(g.wasHit(secondK));
                     if(g.wasHit(secondK)){
                     }
@@ -172,7 +176,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     down.setImageResource(R.drawable.key_downd);
-                    g.hit(thirdK);
                     updateCombo(g.wasHit(thirdK));
                     if(g.wasHit(thirdK)){
                     }
@@ -188,7 +191,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     right.setImageResource(R.drawable.key_rightd);
-                    g.hit(fourthK);
                     updateCombo(g.wasHit(fourthK));
                     if(g.wasHit(fourthK)){
                     }

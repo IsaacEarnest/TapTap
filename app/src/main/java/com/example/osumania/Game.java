@@ -1,8 +1,6 @@
 package com.example.osumania;
 
 import android.util.Log;
-import android.widget.Chronometer;
-import android.widget.ImageView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,29 +19,31 @@ public class Game {
         fourthK
     }
     ArrayList<Integer> first,second,third,fourth;
-    ArrayList<Node> nodes;
+    ArrayList<Notes> notes;
     private double startTime;
     private int greatMargin,okMargin,badMargin,missMargin;
-    private Chronometer chronometer;
-    private ImageView up, down, left, right;
+
 
     public Game(InputStream input) throws IOException {
-        this.scrollSpeed = 50;
+        initVariables();
+        initArrayLists();
+        parseSongFile(input);
 
+    }
+    private void initVariables(){
+        this.scrollSpeed = 50;
         greatMargin = 200;
         okMargin = 400;
         badMargin = 600;
         missMargin = 1500;
-
+        startTime = System.currentTimeMillis();
+    }
+    private void initArrayLists(){
         first = new ArrayList<>();
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
-        nodes = new ArrayList<>();
-
-        startTime = System.currentTimeMillis();
-
-        parseSongFile(input);
+        notes = new ArrayList<>();
 
     }
     public ArrayList getFirstRow(){
@@ -58,29 +58,15 @@ public class Game {
     public ArrayList getFourthRow(){
         return (ArrayList)fourth.clone();
     }
+
     public void increaseScrollSpeed(){
         scrollSpeed++;
     }
     public void decreaseScrollSpeed(){
         scrollSpeed--;
     }
-    public void spawnIcon(int noteHitTime, int position){
-        int noteSpawnTime = noteHitTime - scrollSpeed;
-        if(position == 64){
-            Node node = new Node(position, 0, noteSpawnTime, left);
-        }else if (position == 192){
-            Node node = new Node(position, 0, noteSpawnTime, up);
-        }else if (position == 320){
-            Node node = new Node(position, 0, noteSpawnTime, down);
-        }else if (position == 448){
-            Node node = new Node(position, 0, noteSpawnTime, right);
 
-        }
-    }
 
-    public void hit(keys pos){
-
-    }
     public boolean wasHit(keys pos){
         Log.d(TAG,findHitAcc(pos));
         switch (pos) {
@@ -99,7 +85,7 @@ public class Game {
     }
     private String findHitAcc(keys pos){
 
-        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed -200;
+        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
         Log.d(TAG,"millis= "+millis);
         if(pos.equals(keys.firstK)){
             if(first!=null)
