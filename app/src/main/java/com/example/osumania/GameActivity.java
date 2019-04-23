@@ -79,17 +79,16 @@ public class GameActivity extends AppCompatActivity {
             final ArrayList<Integer> ups = g.getSecondRow();
             final ArrayList<Integer> downs = g.getThirdRow();
             final ArrayList<Integer> rights = g.getFourthRow();
-
+            //initHandler();
             final Handler handler = new Handler();
-            final int delay = 10; //milliseconds
-            Log.d(TAG,""+ups.get(0));
+            final int delay = 1; //milliseconds
+            //Log.d(TAG,""+ups.get(0));
 
             handler.postDelayed(new Runnable(){
                 public void run(){
-                    //do something
                     int curTimeMil = (int)(System.currentTimeMillis())-startTime;
                     int spd = 14*g.getScrollSpeed();
-                    if(lefts.size()>1||ups.size()>1||downs.size()>1||rights.size()>1)
+                    if(lefts.size()<1||ups.size()<1||downs.size()<1||rights.size()<1)
                         handler.removeCallbacksAndMessages(null);
 
                     Log.d(TAG,""+curTimeMil);
@@ -111,6 +110,7 @@ public class GameActivity extends AppCompatActivity {
                         rights.remove(0);
                     }
                     moveNote(g.getScrollSpeed());
+                    //cleanOffscreenNotes();
                     handler.postDelayed(this, delay);
                 }
             }, delay);
@@ -218,10 +218,16 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void moveNote(int speed){
-        for (ImageView i:notes
-             ) {
+        for (ImageView i:notes) {
             i.setY(i.getY() + speed);
 
+        }
+    }
+    private void cleanOffscreenNotes(){
+        for (ImageView i:notes) {
+            if(i.getY()>3000){
+                notes.remove(i);
+            }
         }
     }
 

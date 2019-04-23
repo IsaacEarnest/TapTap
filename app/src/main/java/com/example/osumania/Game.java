@@ -23,7 +23,7 @@ public class Game {
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Node> nodes;
     private double startTime;
-    private double greatMargin,okMargin,badMargin,missMargin;
+    private int greatMargin,okMargin,badMargin,missMargin;
     private Chronometer chronometer;
     private ImageView up, down, left, right;
 
@@ -47,16 +47,16 @@ public class Game {
 
     }
     public ArrayList getFirstRow(){
-        return first;
+        return (ArrayList)first.clone();
     }
     public ArrayList getSecondRow(){
-        return second;
+        return (ArrayList)second.clone();
     }
     public ArrayList getThirdRow(){
-        return third;
+        return (ArrayList)third.clone();
     }
     public ArrayList getFourthRow(){
-        return fourth;
+        return (ArrayList)fourth.clone();
     }
     public void increaseScrollSpeed(){
         scrollSpeed++;
@@ -99,12 +99,12 @@ public class Game {
     }
     private String findHitAcc(keys pos){
 
-        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed;
+        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed -200;
         Log.d(TAG,"millis= "+millis);
         if(pos.equals(keys.firstK)){
             if(first!=null)
             for (Integer i:first) {
-
+                Log.d(TAG,"time = "+(i-millis));
                 if(Math.abs(i-millis)<greatMargin){
                     first.remove(i);
                     return "great";
@@ -114,7 +114,7 @@ public class Game {
                 }else if (Math.abs(i-millis)<badMargin){
                     first.remove(i);
                     return "bad";
-                }else if (Math.abs(i-millis)<=missMargin){
+                }else if(Math.abs(i-millis)<missMargin){
                     first.remove(i);
                     return "miss";
                 }
@@ -131,7 +131,7 @@ public class Game {
                 }else if (Math.abs(i-millis)<badMargin){
                     second.remove(i);
                     return "bad";
-                }else if (Math.abs(i-millis)<=missMargin){
+                }else if(Math.abs(i-millis)<missMargin){
                     second.remove(i);
                     return "miss";
                 }
@@ -148,7 +148,7 @@ public class Game {
                 }else if (Math.abs(i-millis)<badMargin){
                     third.remove(i);
                     return "bad";
-                }else if (Math.abs(i-millis)<=missMargin){
+                }else if(Math.abs(i-millis)<missMargin){
                     third.remove(i);
                     return "miss";
                 }
@@ -165,13 +165,17 @@ public class Game {
                 }else if (Math.abs(i-millis)<badMargin){
                     fourth.remove(i);
                     return "bad";
-                }else if (Math.abs(i-millis)<=missMargin){
+                }else if(Math.abs(i-millis)<missMargin){
                     fourth.remove(i);
                     return "miss";
                 }
+                if((i-millis)>0)
+                    Log.d(TAG,"Early by "+ (i-millis));
+                else Log.d(TAG,"Late by "+(i-millis));
             }
         }
         //return "miss";
+
         return "test";
     }
 
