@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
 import static com.example.osumania.Game.keys.secondK;
@@ -82,6 +81,7 @@ public class GameActivity extends AppCompatActivity {
         allNotes.add(g.getFourthRow());
         n = new Notes(allNotes);
     }
+
     private void startSong()throws Exception{
         Bundle extras = getIntent().getExtras();
 
@@ -99,6 +99,7 @@ public class GameActivity extends AppCompatActivity {
             mpSong = MediaPlayer.create(this,R.raw.tutorial);
         mpSong.start();
     }
+
     private void initHandler(){
         final Handler handler = new Handler();
         final int delay = 1; //milliseconds
@@ -150,13 +151,11 @@ public class GameActivity extends AppCompatActivity {
         mpSong.stop();
     }
 
-    private void updateCombo(boolean wasHit){
-
+    protected void updateCombo(boolean wasHit){
         if(wasHit) comboCount++;
         else comboCount = 0;
         combo.setText(""+comboCount);
     }
-
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         initOnTouchListener(key1);
@@ -211,59 +210,66 @@ public class GameActivity extends AppCompatActivity {
 
 
 
-
-    private void moveNote(int speed){
+    private void moveNote(int speed) {
         int offscreen = 3000;
-        for (ImageView i:notes) {
-            if(i.getY()<offscreen){
-            i.setY(i.getY() + speed);
+        for (ImageView i : notes) {
+            if (i.getY() < offscreen) {
+                i.setY(i.getY() + speed);
             }
         }
     }
+        private void cleanOffscreenNotes () {
+            for (ImageView i : notes) {
+                if (i.getY() > 3000) {
+                    notes.remove(i);
+                }
+            }
+        }
 
 
-    private void createNote(int pos){
-        final ConstraintLayout cl = findViewById(R.id.cl);
-        ImageView iv = new ImageView(getApplicationContext());
-        ConstraintLayout.LayoutParams lp;
-        switch (pos){
-            case 64:
-                iv.setImageDrawable(getDrawable(R.drawable.left));
-                lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                iv.setLayoutParams(lp);
-                cl.addView(iv);
-                iv.setY(-1000);
+        private void createNote(int pos){
+            final ConstraintLayout cl = findViewById(R.id.cl);
+            ImageView iv = new ImageView(getApplicationContext());
+            ConstraintLayout.LayoutParams lp;
+            switch (pos) {
+                case 64:
+                    iv.setImageDrawable(getDrawable(R.drawable.left));
+                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    iv.setLayoutParams(lp);
+                    cl.addView(iv);
+                    iv.setY(-1000);
 
-                break;
-            case 192:
-                iv.setImageDrawable(getDrawable(R.drawable.up));
-                lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                iv.setLayoutParams(lp);
-                lp.setMargins(4,0,100,100);
-                cl.addView(iv);
-                iv.setX(240);
-                iv.setY(-1000);
-                break;
-            case 320:
-                iv.setImageDrawable(getDrawable(R.drawable.down));
-                lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                iv.setLayoutParams(lp);
-                cl.addView(iv);
-                iv.setX(500);
-                iv.setY(-1000);
-                break;
-            case 448:
-                iv.setImageDrawable(getDrawable(R.drawable.right));
-                lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                iv.setLayoutParams(lp);
-                cl.addView(iv);
-                iv.setX(750);
-                iv.setY(-1000);
-                break;
+                    break;
+                case 192:
+                    iv.setImageDrawable(getDrawable(R.drawable.up));
+                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    iv.setLayoutParams(lp);
+                    lp.setMargins(4, 0, 100, 100);
+                    cl.addView(iv);
+                    iv.setX(240);
+                    iv.setY(-1000);
+                    break;
+                case 320:
+                    iv.setImageDrawable(getDrawable(R.drawable.down));
+                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    iv.setLayoutParams(lp);
+                    cl.addView(iv);
+                    iv.setX(500);
+                    iv.setY(-1000);
+                    break;
+                case 448:
+                    iv.setImageDrawable(getDrawable(R.drawable.right));
+                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    iv.setLayoutParams(lp);
+                    cl.addView(iv);
+                    iv.setX(750);
+                    iv.setY(-1000);
+                    break;
 
-        }notes.add(iv);
+            }
+            notes.add(iv);
+
+        }
 
     }
 
-
-}
