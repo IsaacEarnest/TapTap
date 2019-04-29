@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private String song;
 
     private final String TAG = "MainActivity";
-    Button songB1, songB2;
+    Button songB1, songB2, songB3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
+        songB3 = findViewById(R.id.song3);
         initOnClickListeners();
     }
 
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
                 openGameActivity();
             }
         });
+        songB3.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                song = "Songs/Tutorial/tutorial[4K Basics].osu";
+                openGameActivity();
+            }
+        });
+
     }
 
     private void openGameActivity() {
