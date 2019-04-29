@@ -56,14 +56,6 @@ public class Game {
         return (ArrayList)fourth.clone();
     }
 
-    public void increaseScrollSpeed(){
-        scrollSpeed++;
-    }
-
-    public void decreaseScrollSpeed(){
-        scrollSpeed--;
-    }
-
     public boolean wasHit(keys pos){
         Log.d(TAG,findHitAcc(pos));
         switch (pos) {
@@ -79,85 +71,38 @@ public class Game {
                 return false;
         }
     }
-
     private String findHitAcc(keys pos){
-        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
         if(pos.equals(keys.firstK)){
-            if(first!=null)
-            for (Integer i:first) {
-                Log.d(TAG,"time = "+(i-millis));
-                if(Math.abs(i-millis)<greatMargin){
-                    first.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    first.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    first.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    first.remove(i);
-                    return "miss";
-                }
-            }
+            checkAcc(first);
         }else if(pos.equals(keys.secondK)){
-            if(second!=null)
-            for (Integer i:second) {
-                if(Math.abs(i-millis)<greatMargin){
-                    second.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    second.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    second.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    second.remove(i);
-                    return "miss";
-                }
-            }
+            checkAcc(second);
         }else if(pos.equals(keys.thirdK)){
-            if(third!=null)
-            for (Integer i:third) {
-                if(Math.abs(i-millis)<greatMargin){
-                    third.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    third.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    third.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    third.remove(i);
-                    return "miss";
-                }
-            }
+            checkAcc(third);
         }else if(pos.equals(keys.fourthK)){
-            if(fourth!=null)
-            for (Integer i:fourth) {
-                if(Math.abs(i-millis)<greatMargin){
-                    fourth.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    fourth.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    fourth.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    fourth.remove(i);
-                    return "miss";
-                }
-                if((i-millis)>0)
-                    Log.d(TAG,"Early by "+ (i-millis));
-                else Log.d(TAG,"Late by "+(i-millis));
+            checkAcc(fourth);
+        }
+        return "test";
+    }
+    private String checkAcc(ArrayList<Integer> notes){
+        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
+        for (Integer i:notes) {
+            Log.d(TAG,"time = "+(i-millis));
+            if(Math.abs(i-millis)<greatMargin){
+                notes.remove(i);
+                return "great";
+            }else if(Math.abs(i-millis)<okMargin){
+                notes.remove(i);
+                return "ok";
+            }else if (Math.abs(i-millis)<badMargin){
+                notes.remove(i);
+                return "bad";
+            }else if(Math.abs(i-millis)<missMargin){
+                notes.remove(i);
+                return "miss";
             }
         }
         return "test";
     }
-
     public void parseSongFile(InputStream input) throws IOException {
         Log.d(TAG,"parsing");
         String line = "";

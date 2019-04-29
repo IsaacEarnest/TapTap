@@ -218,56 +218,44 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
-        private void cleanOffscreenNotes () {
-            for (ImageView i : notes) {
-                if (i.getY() > 3000) {
-                    notes.remove(i);
-                }
-            }
-        }
-
-
         private void createNote(int pos){
             final ConstraintLayout cl = findViewById(R.id.cl);
             ImageView iv = new ImageView(getApplicationContext());
             ConstraintLayout.LayoutParams lp;
+            int offscreen = -1000;
+            final int leftKey = 64;
+            final int upKey = 192;
+            int upPos = 240;
+            final int downKey = 320;
+            int downPos = 500;
+            final int rightKey = 448;
+            int rightPos = 750;
             switch (pos) {
-                case 64:
+                case leftKey:
                     iv.setImageDrawable(getDrawable(R.drawable.left));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setY(-1000);
-
                     break;
-                case 192:
+                case upKey:
                     iv.setImageDrawable(getDrawable(R.drawable.up));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    lp.setMargins(4, 0, 100, 100);
-                    cl.addView(iv);
-                    iv.setX(240);
-                    iv.setY(-1000);
+                    iv.setX(upPos);
                     break;
-                case 320:
+                case downKey:
                     iv.setImageDrawable(getDrawable(R.drawable.down));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setX(500);
-                    iv.setY(-1000);
+                    iv.setX(downPos);
                     break;
-                case 448:
+                case rightKey:
                     iv.setImageDrawable(getDrawable(R.drawable.right));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setX(750);
-                    iv.setY(-1000);
+                    iv.setX(rightPos);
                     break;
 
             }
+            lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            iv.setLayoutParams(lp);
+            cl.addView(iv);
+            iv.setY(offscreen);
             notes.add(iv);
+
+        }
+        private void createNoteHelper(){
 
         }
 
