@@ -80,80 +80,50 @@ public class Game {
         }
     }
 
-    private String findHitAcc(keys pos){
-        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
-        if(pos.equals(keys.firstK)){
-            if(first!=null)
-            for (Integer i:first) {
-                Log.d(TAG,"time = "+(i-millis));
-                if(Math.abs(i-millis)<greatMargin){
-                    first.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    first.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    first.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    first.remove(i);
-                    return "miss";
-                }
+
+    private double getCurrentTime() {
+        return System.currentTimeMillis() - startTime + 14 * scrollSpeed + 500;
+    }
+
+    private String hitMarginString(ArrayList<Integer> position) {
+        double currentTime = getCurrentTime();
+        for (Integer i : position) {
+            //Log.d(TAG, "time = " + (i - currentTime));
+            if (Math.abs(i - currentTime) < greatMargin) {
+                position.remove(i);
+                return "great";
             }
-        }else if(pos.equals(keys.secondK)){
-            if(second!=null)
-            for (Integer i:second) {
-                if(Math.abs(i-millis)<greatMargin){
-                    second.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    second.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    second.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    second.remove(i);
-                    return "miss";
-                }
+            if (Math.abs(i - currentTime) < okMargin) {
+                position.remove(i);
+                return "ok";
             }
-        }else if(pos.equals(keys.thirdK)){
-            if(third!=null)
-            for (Integer i:third) {
-                if(Math.abs(i-millis)<greatMargin){
-                    third.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    third.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    third.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    third.remove(i);
-                    return "miss";
-                }
+            if (Math.abs(i - currentTime) < badMargin) {
+                position.remove(i);
+                return "bad";
             }
-        }else if(pos.equals(keys.fourthK)){
-            if(fourth!=null)
-            for (Integer i:fourth) {
-                if(Math.abs(i-millis)<greatMargin){
-                    fourth.remove(i);
-                    return "great";
-                }else if(Math.abs(i-millis)<okMargin){
-                    fourth.remove(i);
-                    return "ok";
-                }else if (Math.abs(i-millis)<badMargin){
-                    fourth.remove(i);
-                    return "bad";
-                }else if(Math.abs(i-millis)<missMargin){
-                    fourth.remove(i);
-                    return "miss";
-                }
-                if((i-millis)>0)
-                    Log.d(TAG,"Early by "+ (i-millis));
-                else Log.d(TAG,"Late by "+(i-millis));
+            if (Math.abs(i - currentTime) < missMargin) {
+                position.remove(i);
+                return "miss";
             }
+        }
+        return "test";
+    }
+
+
+    private String findHitAcc(keys pos) throws NullPointerException {
+
+        double millis = getCurrentTime();
+        if (pos.equals(keys.firstK)) {
+            return hitMarginString(first);
+        } else if (pos.equals(keys.secondK)) {
+            return hitMarginString(second);
+        } else if (pos.equals(keys.thirdK)) {
+            return hitMarginString(third);
+        } else if (pos.equals(keys.fourthK)) {
+            return hitMarginString(fourth);
+            //if ((i - millis) > 0)
+            //Log.d(TAG, "Early by " + (i - millis));
+            //else Log.d(TAG, "Late by " + (i - millis));
         }
         return "test";
     }
