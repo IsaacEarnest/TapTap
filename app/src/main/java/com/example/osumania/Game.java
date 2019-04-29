@@ -1,7 +1,6 @@
 package com.example.osumania;
 
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,27 +8,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
+    private int scrollSpeed, greatMargin, okMargin, badMargin, missMargin;
+    enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
-
-    private int scrollSpeed;
-    enum keys{
-        firstK,
-        secondK,
-        thirdK,
-        fourthK
-    }
+    private double startTime;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
-    private double startTime;
-    private int greatMargin,okMargin,badMargin,missMargin;
+
 
 
     public Game(InputStream input) throws IOException {
         initVariables();
         initArrayLists();
         parseSongFile(input);
-
     }
+
     private void initVariables(){
         this.scrollSpeed = 50;
         greatMargin = 200;
@@ -38,23 +31,27 @@ public class Game {
         missMargin = 1500;
         startTime = System.currentTimeMillis();
     }
+
     private void initArrayLists(){
         first = new ArrayList<>();
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
         notes = new ArrayList<>();
-
     }
+
     public ArrayList getFirstRow(){
         return (ArrayList)first.clone();
     }
+
     public ArrayList getSecondRow(){
         return (ArrayList)second.clone();
     }
+
     public ArrayList getThirdRow(){
         return (ArrayList)third.clone();
     }
+
     public ArrayList getFourthRow(){
         return (ArrayList)fourth.clone();
     }
@@ -62,10 +59,10 @@ public class Game {
     public void increaseScrollSpeed(){
         scrollSpeed++;
     }
+
     public void decreaseScrollSpeed(){
         scrollSpeed--;
     }
-
 
     public boolean wasHit(keys pos){
         Log.d(TAG,findHitAcc(pos));
@@ -81,10 +78,9 @@ public class Game {
             default:
                 return false;
         }
-
     }
-    private String findHitAcc(keys pos){
 
+    private String findHitAcc(keys pos){
         double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
         if(pos.equals(keys.firstK)){
             if(first!=null)
@@ -164,18 +160,14 @@ public class Game {
 
     public void parseSongFile(InputStream input) throws IOException {
         Log.d(TAG,"parsing");
-
         String line = "";
         String firstRow = "64";
         String secondRow = "192";
         String thirdRow = "320";
         String fourthRow = "448";
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             Log.d(TAG, "File open for business!");
-            while (!reader.readLine().equals("[HitObjects]")) {
-
-            }
+            while (!reader.readLine().equals("[HitObjects]")) { }
             //Adding Notes
             while ((line = reader.readLine()) != null) {
                 if (line.split(",")[0].equals(firstRow)) {
@@ -189,8 +181,8 @@ public class Game {
                     }
             }
     }
+
     public int getScrollSpeed(){
         return scrollSpeed;
     }
-
 }

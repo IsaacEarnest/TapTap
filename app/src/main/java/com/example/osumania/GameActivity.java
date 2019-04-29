@@ -14,30 +14,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import static com.example.osumania.Game.keys.firstK;
 import static com.example.osumania.Game.keys.fourthK;
 import static com.example.osumania.Game.keys.secondK;
 import static com.example.osumania.Game.keys.thirdK;
 
 public class GameActivity extends AppCompatActivity {
-
+    int comboCount, startTime, first, second, third, fourth;
     final String TAG = "GameActivity";
     Button key1, key2, key3, key4;
-
-    ImageView up,down,left,right;
+    ImageView up, down, left, right;
     Game g;
     TextView combo;
-    int comboCount;
     MediaPlayer mpSong;
     ArrayList<ImageView> notes;
     ArrayList<Integer> lefts, ups, downs, rights;
-    String crystalia;
-    String asu;
-    int startTime;
-    int first,second,third,fourth;
+    String crystalia; String asu;
     Notes n;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +60,7 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity",e.getMessage(), e);
         }
     }
+
     private void initNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(g.getFirstRow());
@@ -75,6 +69,7 @@ public class GameActivity extends AppCompatActivity {
         allNotes.add(g.getFourthRow());
         n = new Notes(allNotes);
     }
+
     private void startSong()throws Exception{
         Bundle extras = getIntent().getExtras();
 
@@ -89,6 +84,7 @@ public class GameActivity extends AppCompatActivity {
             mpSong = MediaPlayer.create(this,R.raw.crystalia);
         mpSong.start();
     }
+
     private void initHandler(){
         final Handler handler = new Handler();
         final int delay = 1; //milliseconds
@@ -125,6 +121,7 @@ public class GameActivity extends AppCompatActivity {
             }
         }, delay);
     }
+
     @Override
     protected void onPause(){
         super.onPause();
@@ -132,8 +129,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private void updateCombo(boolean wasHit){
-
+    protected void updateCombo(boolean wasHit){
         if(wasHit) comboCount++;
         else comboCount = 0;
         combo.setText(""+comboCount);
@@ -218,13 +214,13 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-
     private void moveNote(int speed){
         for (ImageView i:notes) {
             i.setY(i.getY() + speed);
 
         }
     }
+
     private void cleanOffscreenNotes(){
         for (ImageView i:notes) {
             if(i.getY()>3000){
