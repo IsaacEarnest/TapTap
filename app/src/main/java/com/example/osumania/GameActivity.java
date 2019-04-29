@@ -255,9 +255,6 @@ public class GameActivity extends AppCompatActivity {
             notes.add(iv);
 
         }
-        private void createNoteHelper(){
-
-        }
 
     }
 

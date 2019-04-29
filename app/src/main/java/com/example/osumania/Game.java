@@ -71,38 +71,50 @@ public class Game {
                 return false;
         }
     }
-    private String findHitAcc(keys pos){
-        if(pos.equals(keys.firstK)){
-            checkAcc(first);
-        }else if(pos.equals(keys.secondK)){
-            checkAcc(second);
-        }else if(pos.equals(keys.thirdK)){
-            checkAcc(third);
-        }else if(pos.equals(keys.fourthK)){
-            checkAcc(fourth);
-        }
-        return "test";
+
+    private double getCurrentTime() {
+        return System.currentTimeMillis() - startTime + 14 * scrollSpeed + 500;
     }
-    private String checkAcc(ArrayList<Integer> notes){
-        double millis=System.currentTimeMillis()-startTime + 14*scrollSpeed +500;
-        for (Integer i:notes) {
-            Log.d(TAG,"time = "+(i-millis));
-            if(Math.abs(i-millis)<greatMargin){
-                notes.remove(i);
+
+    private String hitMarginString(ArrayList<Integer> position) {
+        double currentTime = getCurrentTime();
+        for (Integer i : position) {
+            //Log.d(TAG, "time = " + (i - currentTime));
+            if (Math.abs(i - currentTime) < greatMargin) {
+                position.remove(i);
                 return "great";
-            }else if(Math.abs(i-millis)<okMargin){
-                notes.remove(i);
+            }
+            if (Math.abs(i - currentTime) < okMargin) {
+                position.remove(i);
                 return "ok";
-            }else if (Math.abs(i-millis)<badMargin){
-                notes.remove(i);
+            }
+            if (Math.abs(i - currentTime) < badMargin) {
+                position.remove(i);
                 return "bad";
-            }else if(Math.abs(i-millis)<missMargin){
-                notes.remove(i);
+            }
+            if (Math.abs(i - currentTime) < missMargin) {
+                position.remove(i);
                 return "miss";
             }
         }
         return "test";
     }
+
+    private String findHitAcc(keys pos) throws NullPointerException {
+
+        double millis = getCurrentTime();
+        if (pos.equals(keys.firstK)) {
+            return hitMarginString(first);
+        } else if (pos.equals(keys.secondK)) {
+            return hitMarginString(second);
+        } else if (pos.equals(keys.thirdK)) {
+            return hitMarginString(third);
+        } else if (pos.equals(keys.fourthK)) {
+            return hitMarginString(fourth);
+        }
+        return "test";
+    }
+
     public void parseSongFile(InputStream input) throws IOException {
         Log.d(TAG,"parsing");
         String line = "";
