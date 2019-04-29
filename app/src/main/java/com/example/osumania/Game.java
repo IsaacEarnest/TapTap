@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
-    private int scrollSpeed, greatMargin, okMargin, badMargin, missMargin;
+    private double greatMargin, okMargin, badMargin, missMargin;
+    private int scrollSpeed;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
     private double startTime;
@@ -56,30 +57,22 @@ public class Game {
         return (ArrayList)fourth.clone();
     }
 
-    public boolean wasHit(keys pos){
-        Log.d(TAG,findHitAcc(pos));
-        switch (pos) {
-            case firstK:
-                return !findHitAcc(pos).equals("miss");
-            case secondK:
-                return !findHitAcc(pos).equals("miss");
-            case thirdK:
-                return !findHitAcc(pos).equals("miss");
-            case fourthK:
-                return !findHitAcc(pos).equals("miss");
-            default:
-                return false;
-        }
+    public boolean wasMiss(keys pos){
+        return findHitAcc(pos).equals("miss");
+    }
+
+    public boolean wasTest(keys pos){
+        return findHitAcc(pos).equals("test");
     }
 
     private double getCurrentTime() {
-        return System.currentTimeMillis() - startTime + 14 * scrollSpeed + 500;
+        return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
 
     private String hitMarginString(ArrayList<Integer> position) {
         double currentTime = getCurrentTime();
         for (Integer i : position) {
-            //Log.d(TAG, "time = " + (i - currentTime));
+            Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
             if (Math.abs(i - currentTime) < greatMargin) {
                 position.remove(i);
                 return "great";
@@ -101,8 +94,6 @@ public class Game {
     }
 
     private String findHitAcc(keys pos) throws NullPointerException {
-
-        double millis = getCurrentTime();
         if (pos.equals(keys.firstK)) {
             return hitMarginString(first);
         } else if (pos.equals(keys.secondK)) {

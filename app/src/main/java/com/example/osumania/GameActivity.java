@@ -150,12 +150,6 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
         mpSong.stop();
     }
-
-    protected void updateCombo(boolean wasHit){
-        if(wasHit) comboCount++;
-        else comboCount = 0;
-        combo.setText(""+comboCount);
-    }
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         initOnTouchListener(key1);
@@ -196,9 +190,7 @@ public class GameActivity extends AppCompatActivity {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     UIPos.setImageResource(holdKey);
 
-                    updateCombo(g.wasHit(keyPos));
-                    if(g.wasHit(keyPos)){
-                    }
+                    updateCombo(keyPos);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     UIPos.setImageResource(openKey);
                 }
@@ -207,9 +199,11 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
+    private void updateCombo(Game.keys keyPos){
+        if(g.wasMiss(keyPos)) comboCount=0;
+        else if (!g.wasTest(keyPos))comboCount++;
+        combo.setText(""+comboCount);
+    }
     private void moveNote(int speed) {
         int offscreen = 3000;
         for (ImageView i : notes) {

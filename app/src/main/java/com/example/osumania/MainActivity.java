@@ -19,10 +19,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initButtons();
+        initOnClickListeners();
+    }
+    private void initButtons(){
         songB1 = findViewById(R.id.song1);
         songB2 = findViewById(R.id.song2);
         songB3 = findViewById(R.id.song3);
-        initOnClickListeners();
     }
 
     private void initOnClickListeners() {
