@@ -227,49 +227,42 @@ public class GameActivity extends AppCompatActivity {
         }
 
 
-        private void createNote(int pos){
-            final ConstraintLayout cl = findViewById(R.id.cl);
-            ImageView iv = new ImageView(getApplicationContext());
-            ConstraintLayout.LayoutParams lp;
-            switch (pos) {
-                case 64:
-                    iv.setImageDrawable(getDrawable(R.drawable.left));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setY(-1000);
+    private void setLayoutParams(ImageView iv){
+        final ConstraintLayout cl = findViewById(R.id.cl);
+        ConstraintLayout.LayoutParams lp;
+        lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        iv.setLayoutParams(lp);
+        cl.addView(iv);
+        iv.setY(-1000);
+    }
 
-                    break;
-                case 192:
-                    iv.setImageDrawable(getDrawable(R.drawable.up));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    lp.setMargins(4, 0, 100, 100);
-                    cl.addView(iv);
-                    iv.setX(240);
-                    iv.setY(-1000);
-                    break;
-                case 320:
-                    iv.setImageDrawable(getDrawable(R.drawable.down));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setX(500);
-                    iv.setY(-1000);
-                    break;
-                case 448:
-                    iv.setImageDrawable(getDrawable(R.drawable.right));
-                    lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    iv.setLayoutParams(lp);
-                    cl.addView(iv);
-                    iv.setX(750);
-                    iv.setY(-1000);
-                    break;
+    private void createNote(int pos){
+        ImageView iv = new ImageView(getApplicationContext());
+        switch (pos){
+            case 64:
+                iv.setImageDrawable(getDrawable(R.drawable.left));
+                setLayoutParams(iv);
+                break;
+            case 192:
+                iv.setImageDrawable(getDrawable(R.drawable.up));
+                setLayoutParams(iv);
+                iv.setX(240);
+                break;
+            case 320:
+                iv.setImageDrawable(getDrawable(R.drawable.down));
+                setLayoutParams(iv);
+                iv.setX(500);
+                break;
+            case 448:
+                iv.setImageDrawable(getDrawable(R.drawable.right));
+                setLayoutParams(iv);
+                iv.setX(750);
+                break;
 
-            }
-            notes.add(iv);
+        }notes.add(iv);
 
-        }
+    }
+
 
     }
 
