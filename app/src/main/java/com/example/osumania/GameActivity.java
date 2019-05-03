@@ -189,14 +189,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //TODO unit testable
-    protected void updateCombo(Game.keys keyPos){
+    void updateCombo(Game.keys keyPos){
         if(g.wasMiss(keyPos)) comboCount=0;
         else if (!g.wasTest(keyPos))comboCount++;
         combo.setText(""+comboCount);
     }
 
     //TODO maybe unit testable idk
-    private void moveNote(int speed) {
+    void moveNote(int speed) {
         int offscreen = 3000;
         for (ImageView i : notes) {
             if (i.getY() < offscreen) {
@@ -205,7 +205,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void createNote(int pos){
+    void createNote(int pos){
             final ConstraintLayout cl = findViewById(R.id.cl);
             ImageView iv = new ImageView(getApplicationContext());
             ConstraintLayout.LayoutParams lp;
