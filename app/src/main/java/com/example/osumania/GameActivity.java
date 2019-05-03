@@ -26,13 +26,11 @@ public class GameActivity extends AppCompatActivity {
     private TextView combo;
     private Game g;
     private Notes n;
-    private  MediaPlayer mpSong;
+    private MediaPlayer mpSong;
     private ArrayList<ImageView> notes;
     private ArrayList<Integer> lefts, ups, downs, rights;
     private String crystalia, tutorial, asu;
-    private int comboCount;
-    private int startTime;
-    private int first,second,third,fourth;
+    private int comboCount, startTime, first,second,third,fourth;;
 
 
     @Override
@@ -43,10 +41,8 @@ public class GameActivity extends AppCompatActivity {
             setUpComponents();
             initOnTouchListeners();
             startSong();
-
             startTime = (int)System.currentTimeMillis();
             comboCount = 0;
-
             initKeysComponents();
             initNotes();
             initHandler();
@@ -60,14 +56,11 @@ public class GameActivity extends AppCompatActivity {
         key2 = findViewById(R.id.key2);
         key3 = findViewById(R.id.key3);
         key4 = findViewById(R.id.key4);
-
         up = findViewById(R.id.up);
         down = findViewById(R.id.down);
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
-
         combo = findViewById(R.id.combo);
-
     }
 
     private void initNotes(){
@@ -81,7 +74,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void startSong()throws Exception{
         Bundle extras = getIntent().getExtras();
-
         String song = extras.getString("SONGNAME");
         InputStream songInput = getAssets().open(song);
         asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
@@ -100,13 +92,11 @@ public class GameActivity extends AppCompatActivity {
     private void initHandler(){
         final Handler handler = new Handler();
         final int delay = 1; //milliseconds
-
         handler.postDelayed(new Runnable(){
             public void run(){
                 int curTimeMil = (int)(System.currentTimeMillis())-startTime;
                 int spd = 14*g.getScrollSpeed();
                 if(!(lefts.isEmpty()&&ups.isEmpty()&&downs.isEmpty()&&rights.isEmpty())) {
-
                     if (n.getCurrentNote(first) <= curTimeMil + spd) {
                         createNote(first);
                         n.toNextNote(first);
@@ -125,7 +115,6 @@ public class GameActivity extends AppCompatActivity {
                     }
                     moveNote(g.getScrollSpeed());
                 }
-
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -137,7 +126,6 @@ public class GameActivity extends AppCompatActivity {
         third=320;
         fourth=448;
         notes = new ArrayList<>();
-
         lefts = g.getFirstRow();
         ups = g.getSecondRow();
         downs = g.getThirdRow();
@@ -195,7 +183,6 @@ public class GameActivity extends AppCompatActivity {
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     UIPos.setImageResource(openKey);
                 }
-
                 return true;
             }
         });
@@ -246,14 +233,12 @@ public class GameActivity extends AppCompatActivity {
                     iv.setImageDrawable(getDrawable(R.drawable.right));
                     iv.setX(rightPos);
                     break;
-
             }
             lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             iv.setLayoutParams(lp);
             cl.addView(iv);
             iv.setY(offscreen);
             notes.add(iv);
-
         }
 
     }
