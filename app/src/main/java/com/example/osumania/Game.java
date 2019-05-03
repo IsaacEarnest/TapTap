@@ -16,8 +16,6 @@ public class Game {
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
 
-
-
     public Game(InputStream input) throws IOException {
         initVariables();
         initArrayLists();
@@ -41,20 +39,20 @@ public class Game {
         notes = new ArrayList<>();
     }
 
-    public ArrayList getFirstRow(){
-        return (ArrayList)first.clone();
+    public ArrayList<Integer> getFirstRow(){
+        return (ArrayList<Integer>)first.clone();
     }
 
-    public ArrayList getSecondRow(){
-        return (ArrayList)second.clone();
+    public ArrayList<Integer> getSecondRow(){
+        return (ArrayList<Integer>)second.clone();
     }
 
-    public ArrayList getThirdRow(){
-        return (ArrayList)third.clone();
+    public ArrayList<Integer> getThirdRow(){
+        return (ArrayList<Integer>)third.clone();
     }
 
-    public ArrayList getFourthRow(){
-        return (ArrayList)fourth.clone();
+    public ArrayList<Integer> getFourthRow(){
+        return (ArrayList<Integer>)fourth.clone();
     }
 
     public boolean wasMiss(keys pos){
