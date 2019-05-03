@@ -16,7 +16,7 @@ public class Notes {
         this.fourth = allRows.get(3);
     }
 
-    public int toNextNote(int pos){
+    public int toNextNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case 64:
                 return first.remove(0);
@@ -27,9 +27,9 @@ public class Notes {
             case 448:
                 return fourth.remove(0);
         }
-        return -1;
+        throw new IllegalArgumentException("toNextNote has received an invalid position.");
     }
-    public int getCurrentNote(int pos){
+    public int getCurrentNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case 64:
                 return first.get(0);
@@ -40,11 +40,11 @@ public class Notes {
             case 448:
                 return fourth.get(0);
         }
-        return -1;
+        throw new IllegalArgumentException("getCurrentNote has received an invalid position.");
     }
 //TODO test hasNotes to see if it returns true when one or more of the arrayLists is empty
     public boolean hasNotes()throws IllegalArgumentException{
-        return !(first.isEmpty()&&second.isEmpty()&&third.isEmpty()&&fourth.isEmpty());
+        return !(first.isEmpty()||second.isEmpty()||third.isEmpty()||fourth.isEmpty());
     }
 
 }

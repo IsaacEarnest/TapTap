@@ -1,6 +1,7 @@
 package com.example.osumania;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -31,7 +32,8 @@ public class GameActivity extends AppCompatActivity {
     private String crystalia, tutorial, asu;
     private int comboCount;
     private int first,second,third,fourth;
-
+    private int startTime;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class GameActivity extends AppCompatActivity {
             initOnTouchListeners();
 
             startGame();
-
+            startTime = g.getCurTimeMil();
 
 
             comboCount = 0;
@@ -68,12 +70,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initNotes(){
-        ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
-        allNotes.add(g.getFirstRow());
-        allNotes.add(g.getSecondRow());
-        allNotes.add(g.getThirdRow());
-        allNotes.add(g.getFourthRow());
-        n = new Notes(allNotes);
+        notes = new ArrayList<>();
+
+
+        n = new Notes(g.getAllNotes());
     }
 
     private void startGame()throws Exception{
@@ -95,14 +95,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initHandler(){
-        final Handler handler = new Handler();
         final int delay = 1; //milliseconds
         handler.postDelayed(new Runnable(){
             public void run(){
                 int curTimeMil = g.getCurTimeMil();
                 int spd = 14*g.getScrollSpeed();
                 if(n.hasNotes()) {
-
                     if (n.getCurrentNote(first) <= curTimeMil + spd) {
                         createNote(first);
                         n.toNextNote(first);
@@ -119,25 +117,33 @@ public class GameActivity extends AppCompatActivity {
                         createNote(fourth);
                         n.toNextNote(fourth);
                     }
-                    moveNote(g.getScrollSpeed());
+                }else{
+                    toScoreScreen();
                 }
+                moveNote(g.getScrollSpeed());
                 handler.postDelayed(this, delay);
             }
         }, delay);
     }
-
+    private void toScoreScreen(){
+        Log.d(TAG,"toScoreScreen: Opening score activity"+g.getAccuracy());
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("SONGNAME", g.getAccuracy());
+        startActivity(intent);
+    }
     private void initKeysComponents(){
         first=64;
         second=192;
         third=320;
         fourth=448;
-        notes = new ArrayList<>();
+
     }
 
     @Override
     protected void onPause(){
         super.onPause();
         mpSong.stop();
+        handler.removeCallbacksAndMessages(null);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -199,6 +205,7 @@ public class GameActivity extends AppCompatActivity {
 //TODO probably tough to unit test since UI components are directly involved
     //can maybe set dummy variables for y
     private void moveNote(int speed) {
+        int curTime = g.getCurTimeMil();
         int belowScreen = 3000;
         for (ImageView i : notes) {
             if (i.getY() < belowScreen) {
