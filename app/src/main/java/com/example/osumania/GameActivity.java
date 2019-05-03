@@ -30,10 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private Notes n;
     private  MediaPlayer mpSong;
     private ArrayList<ImageView> notes;
-    private ArrayList<Integer> lefts, ups, downs, rights;
     private String crystalia, tutorial, asu;
     private int comboCount;
-    private int startTime;
     private int first,second,third,fourth;
 
 
@@ -42,11 +40,11 @@ public class GameActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_game);
-            setUpComponents();
+            initUIComponents();
             initOnTouchListeners();
-            startSong();
+            startGame();
 
-            startTime = (int)System.currentTimeMillis();
+
             comboCount = 0;
 
             initKeysComponents();
@@ -56,7 +54,7 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity",e.getMessage(), e);
         }
     }
-    private void setUpComponents(){
+    private void initUIComponents(){
         key1 = findViewById(R.id.key1);
         key2 = findViewById(R.id.key2);
         key3 = findViewById(R.id.key3);
@@ -79,15 +77,16 @@ public class GameActivity extends AppCompatActivity {
         n = new Notes(allNotes);
     }
 
-    private void startSong()throws Exception{
+    private void startGame()throws Exception{
         Bundle extras = getIntent().getExtras();
 
         String song = extras.getString("SONGNAME");
         InputStream songInput = getAssets().open(song);
+        g = new Game(songInput);
         asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
         crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
         tutorial = "Songs/Tutorial/tutorial[4K Basics].osu";
-        g = new Game(songInput);
+
         if(song.equals(asu))
             mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
         if(song.equals(crystalia))
@@ -103,9 +102,9 @@ public class GameActivity extends AppCompatActivity {
 
         handler.postDelayed(new Runnable(){
             public void run(){
-                int curTimeMil = (int)(System.currentTimeMillis())-startTime;
+                int curTimeMil = g.getCurTimeMil();
                 int spd = 14*g.getScrollSpeed();
-                if(!(lefts.isEmpty()&&ups.isEmpty()&&downs.isEmpty()&&rights.isEmpty())) {
+                if(n.hasNotes()) {
 
                     if (n.getCurrentNote(first) <= curTimeMil + spd) {
                         createNote(first);
@@ -137,10 +136,6 @@ public class GameActivity extends AppCompatActivity {
         fourth=448;
         notes = new ArrayList<>();
 
-        lefts = g.getFirstRow();
-        ups = g.getSecondRow();
-        downs = g.getThirdRow();
-        rights = g.getFourthRow();
     }
     @Override
     protected void onPause(){
@@ -201,11 +196,10 @@ public class GameActivity extends AppCompatActivity {
         else if (!g.wasTest(keyPos))comboCount++;
         combo.setText(""+comboCount);
     }
-
     private void moveNote(int speed) {
-        int offscreen = 3000;
+        int belowScreen = 3000;
         for (ImageView i : notes) {
-            if (i.getY() < offscreen) {
+            if (i.getY() < belowScreen) {
                 i.setY(i.getY() + speed);
             }
         }
@@ -214,39 +208,28 @@ public class GameActivity extends AppCompatActivity {
             final ConstraintLayout cl = findViewById(R.id.cl);
             ImageView iv = new ImageView(getApplicationContext());
             ConstraintLayout.LayoutParams lp;
-            int offscreen = -1000;
-            final int leftKey = 64;
-            final int upKey = 192;
+            int aboveScreen = -1000;
             int upPos = 240;
-            final int downKey = 320;
             int downPos = 500;
-            final int rightKey = 448;
             int rightPos = 750;
-            switch (pos) {
-                case leftKey:
-                    iv.setImageDrawable(getDrawable(R.drawable.left));
-                    break;
-                case upKey:
-                    iv.setImageDrawable(getDrawable(R.drawable.up));
-                    iv.setX(upPos);
-                    break;
-                case downKey:
-                    iv.setImageDrawable(getDrawable(R.drawable.down));
-                    iv.setX(downPos);
-                    break;
-                case rightKey:
-                    iv.setImageDrawable(getDrawable(R.drawable.right));
-                    iv.setX(rightPos);
-                    break;
-
+            if(pos==first) {
+                iv.setImageDrawable(getDrawable(R.drawable.left));
+            }else if(pos==second) {
+                iv.setImageDrawable(getDrawable(R.drawable.up));
+                iv.setX(upPos);
+            }else if(pos==third) {
+                iv.setImageDrawable(getDrawable(R.drawable.down));
+                iv.setX(downPos);
+            }else if (pos==fourth) {
+                iv.setImageDrawable(getDrawable(R.drawable.right));
+                iv.setX(rightPos);
             }
+
             lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             iv.setLayoutParams(lp);
             cl.addView(iv);
-            iv.setY(offscreen);
+            iv.setY(aboveScreen);
             notes.add(iv);
-
         }
-
     }
 

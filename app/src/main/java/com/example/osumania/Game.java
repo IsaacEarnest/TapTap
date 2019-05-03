@@ -1,5 +1,7 @@
 package com.example.osumania;
 
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +17,10 @@ public class Game {
     private double startTime;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
+    int curTimeMil;
 
     public Game(InputStream input) throws IOException {
+
         initVariables();
         initArrayLists();
         parseSongFile(input);
@@ -37,6 +41,9 @@ public class Game {
         third = new ArrayList<>();
         fourth = new ArrayList<>();
         notes = new ArrayList<>();
+    }
+    public int getCurTimeMil(){
+        return (int)((System.currentTimeMillis())-startTime);
     }
 
     public ArrayList<Integer> getFirstRow(){
