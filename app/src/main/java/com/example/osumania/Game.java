@@ -152,7 +152,8 @@ public class Game {
         String fourthRow = "448";
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             Log.d(TAG, "File open for business!");
-            while (!reader.readLine().equals("[HitObjects]")) { }
+            //Skipping lines which aren't related to hitObjects
+            while (!reader.readLine().equals("[HitObjects]")) {}
             //Adding Notes
             while ((line = reader.readLine()) != null) {
                 if (line.split(",")[0].equals(firstRow)) {
