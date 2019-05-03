@@ -1,7 +1,6 @@
 package com.example.osumania;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -21,14 +20,13 @@ import static com.example.osumania.Game.keys.secondK;
 import static com.example.osumania.Game.keys.thirdK;
 
 public class GameActivity extends AppCompatActivity {
-
     private final String TAG = "GameActivity";
     private Button key1, key2, key3, key4;
     private ImageView up,down,left,right;
     private TextView combo;
     private Game g;
     private Notes n;
-    private  MediaPlayer mpSong;
+    private MediaPlayer mpSong;
     private ArrayList<ImageView> notes;
     private String crystalia, tutorial, asu;
     private int comboCount;
@@ -42,11 +40,12 @@ public class GameActivity extends AppCompatActivity {
             setContentView(R.layout.activity_game);
             initUIComponents();
             initOnTouchListeners();
+
             startGame();
 
 
-            comboCount = 0;
 
+            comboCount = 0;
             initKeysComponents();
             initNotes();
             initHandler();
@@ -54,20 +53,20 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity",e.getMessage(), e);
         }
     }
+
     private void initUIComponents(){
+
         key1 = findViewById(R.id.key1);
         key2 = findViewById(R.id.key2);
         key3 = findViewById(R.id.key3);
         key4 = findViewById(R.id.key4);
-
         up = findViewById(R.id.up);
         down = findViewById(R.id.down);
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
-
         combo = findViewById(R.id.combo);
-
     }
+
     private void initNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(g.getFirstRow());
@@ -79,7 +78,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void startGame()throws Exception{
         Bundle extras = getIntent().getExtras();
-
         String song = extras.getString("SONGNAME");
         InputStream songInput = getAssets().open(song);
         g = new Game(songInput);
@@ -99,7 +97,6 @@ public class GameActivity extends AppCompatActivity {
     private void initHandler(){
         final Handler handler = new Handler();
         final int delay = 1; //milliseconds
-
         handler.postDelayed(new Runnable(){
             public void run(){
                 int curTimeMil = g.getCurTimeMil();
@@ -124,24 +121,25 @@ public class GameActivity extends AppCompatActivity {
                     }
                     moveNote(g.getScrollSpeed());
                 }
-
                 handler.postDelayed(this, delay);
             }
         }, delay);
     }
+
     private void initKeysComponents(){
         first=64;
         second=192;
         third=320;
         fourth=448;
         notes = new ArrayList<>();
-
     }
+
     @Override
     protected void onPause(){
         super.onPause();
         mpSong.stop();
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         initOnTouchListener(key1);
@@ -149,6 +147,7 @@ public class GameActivity extends AppCompatActivity {
         initOnTouchListener(key3);
         initOnTouchListener(key4);
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListener(Button key){
         final ImageView UIPos;
@@ -186,16 +185,19 @@ public class GameActivity extends AppCompatActivity {
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     UIPos.setImageResource(openKey);
                 }
-
                 return true;
             }
         });
     }
-    protected void updateCombo(Game.keys keyPos){
+
+    //TODO unit testable
+    void updateCombo(Game.keys keyPos){
         if(g.wasMiss(keyPos)) comboCount=0;
         else if (!g.wasTest(keyPos))comboCount++;
         combo.setText(""+comboCount);
     }
+//TODO probably tough to unit test since UI components are directly involved
+    //can maybe set dummy variables for y
     private void moveNote(int speed) {
         int belowScreen = 3000;
         for (ImageView i : notes) {
@@ -204,7 +206,8 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
-        private void createNote(int pos){
+
+    void createNote(int pos){
             final ConstraintLayout cl = findViewById(R.id.cl);
             ImageView iv = new ImageView(getApplicationContext());
             ConstraintLayout.LayoutParams lp;

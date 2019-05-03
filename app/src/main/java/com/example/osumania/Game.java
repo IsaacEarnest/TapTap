@@ -62,6 +62,7 @@ public class Game {
         return (ArrayList<Integer>)fourth.clone();
     }
 
+    //TODO maybe unit testable? idk
     public boolean wasMiss(keys pos){
         return findHitAcc(pos).equals("miss");
     }
