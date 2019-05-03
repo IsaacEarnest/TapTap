@@ -74,22 +74,27 @@ public class Game {
         for (Integer i : position) {
             Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
             if (Math.abs(i - currentTime) < greatMargin) {
+                Log.d(TAG,"returning great");
                 position.remove(i);
                 return "great";
             }
             if (Math.abs(i - currentTime) < okMargin) {
+                Log.d(TAG,"returning ok");
                 position.remove(i);
                 return "ok";
             }
             if (Math.abs(i - currentTime) < badMargin) {
+                Log.d(TAG,"returning bad");
                 position.remove(i);
                 return "bad";
             }
             if (Math.abs(i - currentTime) < missMargin) {
+                Log.d(TAG,"returning miss");
                 position.remove(i);
                 return "miss";
             }
         }
+        Log.d(TAG,"returning test");
         return "test";
     }
 
