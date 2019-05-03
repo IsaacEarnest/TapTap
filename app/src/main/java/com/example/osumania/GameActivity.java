@@ -26,12 +26,9 @@ public class GameActivity extends AppCompatActivity {
     private Button key1, key2, key3, key4;
     private ImageView up,down,left,right;
     private TextView combo;
-
     private Game g;
     private Notes n;
-
     private  MediaPlayer mpSong;
-
     private ArrayList<ImageView> notes;
     private ArrayList<Integer> lefts, ups, downs, rights;
     private String crystalia, tutorial, asu;
@@ -199,11 +196,12 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateCombo(Game.keys keyPos){
+    protected void updateCombo(Game.keys keyPos){
         if(g.wasMiss(keyPos)) comboCount=0;
         else if (!g.wasTest(keyPos))comboCount++;
         combo.setText(""+comboCount);
     }
+
     private void moveNote(int speed) {
         int offscreen = 3000;
         for (ImageView i : notes) {

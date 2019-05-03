@@ -3,7 +3,7 @@ package com.example.osumania;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class UpdateComboUnitTest extends GameActivity{
+public class UpdateComboUnitTest extends GameActivity{ //this is bad don't do this
 
     @Test
     public void increment_comboCount_works() {
