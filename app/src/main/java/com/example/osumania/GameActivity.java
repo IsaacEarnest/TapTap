@@ -1,7 +1,6 @@
 package com.example.osumania;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -21,7 +20,6 @@ import static com.example.osumania.Game.keys.secondK;
 import static com.example.osumania.Game.keys.thirdK;
 
 public class GameActivity extends AppCompatActivity {
-
     private final String TAG = "GameActivity";
     private Button key1, key2, key3, key4;
     private ImageView up,down,left,right;
@@ -56,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
             Log.e("GameActivity",e.getMessage(), e);
         }
     }
+
     private void setUpComponents(){
         key1 = findViewById(R.id.key1);
         key2 = findViewById(R.id.key2);
@@ -70,6 +69,7 @@ public class GameActivity extends AppCompatActivity {
         combo = findViewById(R.id.combo);
 
     }
+
     private void initNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(g.getFirstRow());
@@ -130,6 +130,7 @@ public class GameActivity extends AppCompatActivity {
             }
         }, delay);
     }
+
     private void initKeysComponents(){
         first=64;
         second=192;
@@ -142,11 +143,13 @@ public class GameActivity extends AppCompatActivity {
         downs = g.getThirdRow();
         rights = g.getFourthRow();
     }
+
     @Override
     protected void onPause(){
         super.onPause();
         mpSong.stop();
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         initOnTouchListener(key1);
@@ -154,6 +157,7 @@ public class GameActivity extends AppCompatActivity {
         initOnTouchListener(key3);
         initOnTouchListener(key4);
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListener(Button key){
         final ImageView UIPos;
@@ -196,12 +200,15 @@ public class GameActivity extends AppCompatActivity {
             }
         });
     }
+
+    //TODO unit testable
     protected void updateCombo(Game.keys keyPos){
         if(g.wasMiss(keyPos)) comboCount=0;
         else if (!g.wasTest(keyPos))comboCount++;
         combo.setText(""+comboCount);
     }
 
+    //TODO maybe unit testable idk
     private void moveNote(int speed) {
         int offscreen = 3000;
         for (ImageView i : notes) {
@@ -210,7 +217,8 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
-        private void createNote(int pos){
+
+    private void createNote(int pos){
             final ConstraintLayout cl = findViewById(R.id.cl);
             ImageView iv = new ImageView(getApplicationContext());
             ConstraintLayout.LayoutParams lp;
