@@ -122,6 +122,7 @@ public class Game {
         Log.d(TAG,"returning test");
         return "test";
     }
+    //TODO unit test this
     private void calcAccuracy(double acc){
         totalNotesHit++;
         if(acc==greatMargin)totalGreats++;
