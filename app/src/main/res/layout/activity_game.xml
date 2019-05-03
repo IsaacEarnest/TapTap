@@ -139,5 +139,30 @@
         app:layout_constraintVertical_bias="0.453"
         tools:text="0" />
 
+    <TextView
+        android:id="@+id/userScore"
+        android:layout_width="76dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="12dp"
+        android:gravity="right"
+        android:text="0"
+        android:textColor="@android:color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="93dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="right"
+        android:text="Score"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

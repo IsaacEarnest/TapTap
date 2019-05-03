@@ -31,6 +31,8 @@ public class GameActivity extends AppCompatActivity {
     private String crystalia, tutorial, asu;
     private int comboCount;
     private int first,second,third,fourth;
+    private int score;
+    private TextView userScore;
 
 
     @Override
@@ -40,12 +42,9 @@ public class GameActivity extends AppCompatActivity {
             setContentView(R.layout.activity_game);
             initUIComponents();
             initOnTouchListeners();
-
             startGame();
-
-
-
             comboCount = 0;
+            score = 0;
             initKeysComponents();
             initNotes();
             initHandler();
@@ -65,6 +64,7 @@ public class GameActivity extends AppCompatActivity {
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
         combo = findViewById(R.id.combo);
+        userScore = findViewById(R.id.userScore);
     }
 
     private void initNotes(){
@@ -140,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
         mpSong.stop();
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
         initOnTouchListener(key1);
@@ -180,7 +181,6 @@ public class GameActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     UIPos.setImageResource(holdKey);
-
                     updateCombo(keyPos);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     UIPos.setImageResource(openKey);
@@ -192,10 +192,17 @@ public class GameActivity extends AppCompatActivity {
 
     //TODO unit testable
     void updateCombo(Game.keys keyPos){
-        if(g.wasMiss(keyPos)) comboCount=0;
-        else if (!g.wasTest(keyPos))comboCount++;
+        if(g.wasMiss(keyPos)) {
+            comboCount = 0;
+        }
+        else if (!g.wasTest(keyPos)){
+            comboCount++;
+            score ++;
+            userScore.setText(score);
+        }
         combo.setText(""+comboCount);
     }
+
 //TODO probably tough to unit test since UI components are directly involved
     //can maybe set dummy variables for y
     private void moveNote(int speed) {

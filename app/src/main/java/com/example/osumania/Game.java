@@ -17,7 +17,6 @@ public class Game {
     private double startTime;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
-    int curTimeMil;
 
     public Game(InputStream input) throws IOException {
 

@@ -44,7 +44,7 @@ public class Notes {
     }
 //TODO test hasNotes to see if it returns true when one or more of the arrayLists is empty
     public boolean hasNotes()throws IllegalArgumentException{
-        return !(first.isEmpty()&&second.isEmpty()&&third.isEmpty()&&fourth.isEmpty());
+        return !(first.isEmpty()||second.isEmpty()||third.isEmpty()||fourth.isEmpty());
     }
 
 }
