@@ -144,14 +144,14 @@ public class Game {
     }
 
     public void parseSongFile(InputStream input) throws IOException {
-        Log.d(TAG,"parsing");
+        //Log.d(TAG,"parsing");
         String line = "";
         String firstRow = "64";
         String secondRow = "192";
         String thirdRow = "320";
         String fourthRow = "448";
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            Log.d(TAG, "File open for business!");
+            //Log.d(TAG, "File open for business!");
             //Skipping lines which aren't related to hitObjects
             while (!reader.readLine().equals("[HitObjects]")) {}
             //Adding Notes

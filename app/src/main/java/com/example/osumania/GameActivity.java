@@ -208,7 +208,7 @@ public class GameActivity extends AppCompatActivity {
         else if (!g.wasTest(keyPos)){
             comboCount++;
             score ++;
-            userScore.setText(score);
+            userScore.setText(Integer.toString(score));
         }
         combo.setText(""+comboCount);
     }
