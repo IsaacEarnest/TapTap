@@ -36,7 +36,6 @@ public class NoteUnitTests {
         allRows.add(fourth);
     }
 
-    //TODO I don't know how to populate this here from Notes.java ASK DR FERRER
     @Test
     public void toNextNoteTest(){
         populateArrayLists();
