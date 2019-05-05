@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Game {
     private double greatMargin, okMargin, badMargin, missMargin;
-    private double totalGreats, totalOks, totalBads;
+    private int totalGreats, totalOks, totalBads;
     private double greatScore, okScore, badScore;
     private int scrollSpeed;
     enum keys{firstK, secondK, thirdK, fourthK}
@@ -17,6 +17,7 @@ public class Game {
     private double startTime;
     private double accuracy;
     private int totalNotesHit;
+    private int score;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
 
@@ -86,8 +87,22 @@ public class Game {
     private double getCurrentTime() {
         return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
+    //TODO score should really be a singleton class
     public double getAccuracy(){
         return accuracy;
+    }
+    public int getTotalGreats(){
+        return totalGreats;
+    }
+    public int getTotalOks(){
+        return totalOks;
+    }
+    public int getTotalBads(){
+        return totalBads;
+    }
+    public int getTotalMisses(){
+        int misses = totalNotesHit-totalGreats-totalOks-totalBads;
+        return misses;
     }
 
     private String hitMarginString(ArrayList<Integer> position) {
@@ -98,18 +113,21 @@ public class Game {
                 Log.d(TAG,"returning great");
                 position.remove(i);
                 calcAccuracy(greatMargin);
+                score += greatScore;
                 return "great";
             }
             if (Math.abs(i - currentTime) < okMargin) {
                 Log.d(TAG,"returning ok");
                 position.remove(i);
                 calcAccuracy(okMargin);
+                score += okScore;
                 return "ok";
             }
             if (Math.abs(i - currentTime) < badMargin) {
                 Log.d(TAG,"returning bad");
                 position.remove(i);
                 calcAccuracy(badMargin);
+                score += badScore;
                 return "bad";
             }
             if (Math.abs(i - currentTime) < missMargin) {
@@ -128,7 +146,7 @@ public class Game {
         if(acc==greatMargin)totalGreats++;
         else if(acc==okMargin)totalOks++;
         else if(acc==badMargin)totalBads++;
-        accuracy = (greatScore*totalGreats+okScore*totalOks+okScore*totalBads)/(greatScore*totalNotesHit);
+        accuracy = (greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
     }
     private String findHitAcc(keys pos) throws NullPointerException {
         if (pos.equals(keys.firstK)) {

@@ -132,7 +132,8 @@ public class GameActivity extends AppCompatActivity {
     private void toScoreScreen(){
         Log.d(TAG,"toScoreScreen: Opening score activity"+g.getAccuracy());
         Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra("SONGNAME", g.getAccuracy());
+        intent.putExtra("ACCURACY", g.getAccuracy());
+        intent.putExtra("GREATS", g.getAccuracy());
         startActivity(intent);
     }
     private void initKeysComponents(){
