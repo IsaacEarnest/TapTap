@@ -1,11 +1,8 @@
 package com.example.osumania;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class Notes {
-
     private ArrayList<Integer> first, second, third, fourth;
     private final static String TAG = "NotesClass";
 
@@ -29,6 +26,7 @@ public class Notes {
         }
         throw new IllegalArgumentException("toNextNote has received an invalid position.");
     }
+
     public int getCurrentNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case 64:
@@ -42,7 +40,8 @@ public class Notes {
         }
         throw new IllegalArgumentException("getCurrentNote has received an invalid position.");
     }
-//TODO test hasNotes to see if it returns true when one or more of the arrayLists is empty
+
+    //TODO test hasNotes to see if it returns true when one or more of the arrayLists is empty
     public boolean hasNotes()throws IllegalArgumentException{
         return !(first.isEmpty()||second.isEmpty()||third.isEmpty()||fourth.isEmpty());
     }

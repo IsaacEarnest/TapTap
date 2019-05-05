@@ -13,17 +13,16 @@ public class Game {
     private double totalOks, totalBads;
     private double greatScore, okScore, badScore;
     private int scrollSpeed;
+    private double greatMargin, okMargin, badMargin, missMargin, greatScore, okScore, badScore;
+    private int totalGreats, totalOks, totalBads, scrollSpeed, totalNotesHit, score;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
-    private double startTime;
-    private double accuracy;
-    private int totalNotesHit;
+    private double startTime,accuracy;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
 
 
     public Game(InputStream input) throws IOException {
-
         initVariables();
         initArrayLists();
         parseSongFile(input);
@@ -50,9 +49,11 @@ public class Game {
         fourth = new ArrayList<>();
         notes = new ArrayList<>();
     }
+
     public int getCurTimeMil(){
         return (int)((System.currentTimeMillis())-startTime);
     }
+
     public ArrayList<ArrayList<Integer>> getAllNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(first);
@@ -91,27 +92,50 @@ public class Game {
         return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
 
+    //TODO score should really be a singleton class
     public double getAccuracy(){
         return accuracy;
     }
 
     public String hitMarginString(ArrayList<Integer> position) {
         double currentTime = getCurTimeMil();
+    public int getTotalGreats(){
+        return totalGreats;
+    }
+
+    public int getTotalOks(){
+        return totalOks;
+    }
+
+    public int getTotalBads(){
+        return totalBads;
+    }
+
+    public int getTotalMisses(){
+        int misses = totalNotesHit-totalGreats-totalOks-totalBads;
+        return misses;
+    }
+
+    private String hitMarginString(ArrayList<Integer> position) {
+        double currentTime = getCurrentTime();
         for (Integer i : position) {
             //Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
             if (Math.abs(i - currentTime) < greatMargin) {
                 //Log.d(TAG,"returning great");
                 calcAccuracy(greatMargin);
+                score += greatScore;
                 return "great";
             }
             if (Math.abs(i - currentTime) < okMargin) {
                 //Log.d(TAG,"returning ok");
                 calcAccuracy(okMargin);
+                score += okScore;
                 return "ok";
             }
             if (Math.abs(i - currentTime) < badMargin) {
                 //Log.d(TAG,"returning bad");
                 calcAccuracy(badMargin);
+                score += badScore;
                 return "bad";
             }
             if (Math.abs(i - currentTime) < missMargin) {
@@ -126,11 +150,14 @@ public class Game {
     }
 
     public double calcAccuracy(double acc){
+    //TODO unit test this
+    private void calcAccuracy(double acc){
         totalNotesHit++;
         if(acc==greatMargin)totalGreats++;
         else if(acc==okMargin)totalOks++;
         else if(acc==badMargin)totalBads++;
         return ((greatScore*totalGreats) + (okScore*totalOks) + (badScore*totalBads))/(greatScore * totalNotesHit);
+        accuracy = (greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
     }
 
     private String findHitAcc(keys pos) throws NullPointerException {
