@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -37,6 +36,4 @@ public class ModalDialogs {
                     });
             alertDialog.show();
         }
-
-
     }
