@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public class Game {
     private double greatMargin, okMargin, badMargin, missMargin;
-    private double totalGreats, totalOks, totalBads;
+    private double totalGreats;
+    private double totalOks, totalBads;
     private double greatScore, okScore, badScore;
     private int scrollSpeed;
     enum keys{firstK, secondK, thirdK, fourthK}
@@ -19,6 +20,7 @@ public class Game {
     private int totalNotesHit;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
+
 
     public Game(InputStream input) throws IOException {
 
@@ -30,12 +32,14 @@ public class Game {
     private void initVariables(){
         this.scrollSpeed = 50;
         greatMargin = 200;
-        greatScore = 300;
         okMargin = 400;
-        okScore = 200;
         badMargin = 600;
-        badScore = 100;
         missMargin = 1500;
+
+        greatScore = 300;
+        okScore = 200;
+        badScore = 100;
+
         startTime = System.currentTimeMillis();
     }
 
@@ -83,53 +87,52 @@ public class Game {
         return findHitAcc(pos).equals("test");
     }
 
-    private double getCurrentTime() {
+    public double getCurrentTime() {
         return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
+
     public double getAccuracy(){
         return accuracy;
     }
 
-    private String hitMarginString(ArrayList<Integer> position) {
-        double currentTime = getCurrentTime();
+    public String hitMarginString(ArrayList<Integer> position) {
+        double currentTime = getCurTimeMil();
         for (Integer i : position) {
-            Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
+            //Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
             if (Math.abs(i - currentTime) < greatMargin) {
-                Log.d(TAG,"returning great");
-                position.remove(i);
+                //Log.d(TAG,"returning great");
                 calcAccuracy(greatMargin);
                 return "great";
             }
             if (Math.abs(i - currentTime) < okMargin) {
-                Log.d(TAG,"returning ok");
-                position.remove(i);
+                //Log.d(TAG,"returning ok");
                 calcAccuracy(okMargin);
                 return "ok";
             }
             if (Math.abs(i - currentTime) < badMargin) {
-                Log.d(TAG,"returning bad");
-                position.remove(i);
+                //Log.d(TAG,"returning bad");
                 calcAccuracy(badMargin);
                 return "bad";
             }
             if (Math.abs(i - currentTime) < missMargin) {
-                Log.d(TAG,"returning miss");
-                position.remove(i);
+                //Log.d(TAG,"returning miss");
                 calcAccuracy(missMargin);
                 return "miss";
             }
+            position.remove(i);
         }
-        Log.d(TAG,"returning test");
+        //Log.d(TAG,"returning test");
         return "test";
     }
-    //TODO unit test this
-    private void calcAccuracy(double acc){
+
+    public double calcAccuracy(double acc){
         totalNotesHit++;
         if(acc==greatMargin)totalGreats++;
         else if(acc==okMargin)totalOks++;
         else if(acc==badMargin)totalBads++;
-        accuracy = (greatScore*totalGreats+okScore*totalOks+okScore*totalBads)/(greatScore*totalNotesHit);
+        return ((greatScore*totalGreats) + (okScore*totalOks) + (badScore*totalBads))/(greatScore * totalNotesHit);
     }
+
     private String findHitAcc(keys pos) throws NullPointerException {
         if (pos.equals(keys.firstK)) {
             return hitMarginString(first);
