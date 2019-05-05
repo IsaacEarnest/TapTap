@@ -8,21 +8,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
-    private double greatMargin, okMargin, badMargin, missMargin;
-    private int totalGreats, totalOks, totalBads;
-    private double greatScore, okScore, badScore;
-    private int scrollSpeed;
+    private double greatMargin, okMargin, badMargin, missMargin, greatScore, okScore, badScore;
+    private int totalGreats, totalOks, totalBads, scrollSpeed, totalNotesHit, score;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
-    private double startTime;
-    private double accuracy;
-    private int totalNotesHit;
-    private int score;
+    private double startTime,accuracy;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
 
     public Game(InputStream input) throws IOException {
-
         initVariables();
         initArrayLists();
         parseSongFile(input);
@@ -47,9 +41,11 @@ public class Game {
         fourth = new ArrayList<>();
         notes = new ArrayList<>();
     }
+
     public int getCurTimeMil(){
         return (int)((System.currentTimeMillis())-startTime);
     }
+
     public ArrayList<ArrayList<Integer>> getAllNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(first);
@@ -87,19 +83,24 @@ public class Game {
     private double getCurrentTime() {
         return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
+
     //TODO score should really be a singleton class
     public double getAccuracy(){
         return accuracy;
     }
+
     public int getTotalGreats(){
         return totalGreats;
     }
+
     public int getTotalOks(){
         return totalOks;
     }
+
     public int getTotalBads(){
         return totalBads;
     }
+
     public int getTotalMisses(){
         int misses = totalNotesHit-totalGreats-totalOks-totalBads;
         return misses;
@@ -140,6 +141,7 @@ public class Game {
         Log.d(TAG,"returning test");
         return "test";
     }
+
     //TODO unit test this
     private void calcAccuracy(double acc){
         totalNotesHit++;
@@ -148,6 +150,7 @@ public class Game {
         else if(acc==badMargin)totalBads++;
         accuracy = (greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
     }
+
     private String findHitAcc(keys pos) throws NullPointerException {
         if (pos.equals(keys.firstK)) {
             return hitMarginString(first);

@@ -211,7 +211,7 @@ public class GameActivity extends AppCompatActivity {
         combo.setText(""+comboCount);
     }
 
-//TODO probably tough to unit test since UI components are directly involved
+    //TODO probably tough to unit test since UI components are directly involved
     //can maybe set dummy variables for y
     private void moveNote(int speed) {
         int curTime = g.getCurTimeMil();
