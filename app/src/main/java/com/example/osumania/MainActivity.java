@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
     private void initOnClickListeners() {
         songB1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                song = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
+                song = "Songs/Asu no Yozora/Asu no Yozora[Normal].osu";
                 openGameActivity();
             }
         });
         songB2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                song = "Songs/Crystalia/Crystalia [Hyper].osu";
+                song = "Songs/Crystalia/Crystalia[Normal].osu";
                 openGameActivity();
             }
         });

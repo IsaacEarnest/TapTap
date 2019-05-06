@@ -41,70 +41,70 @@
 
     <TextView
         android:id="@+id/greatScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="56dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="300s/Greats"
-        android:textSize="20dp"
         android:textColor="@android:color/holo_purple"
+        android:textSize="55dp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <TextView
         android:id="@+id/okScore"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="56dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="200s/OKs"
         android:textColor="@android:color/holo_purple"
-        android:textSize="20dp"
+        android:textSize="55dp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/greatScore" />
 
     <TextView
         android:id="@+id/badScore"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="100s/Bads"
         android:textColor="@android:color/holo_purple"
-        android:textSize="20dp"
+        android:textSize="55dp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.787"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/okScore" />
 
     <TextView
         android:id="@+id/missScore"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Misses"
         android:textColor="@android:color/holo_purple"
-        android:textSize="20dp"
+        android:textSize="55dp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/toMenu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/badScore"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -150,28 +150,27 @@
 
     <TextView
         android:id="@+id/totalScore"
-        android:layout_width="90dp"
+        android:layout_width="155dp"
         android:layout_height="56dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:text="250"
         android:textColor="@android:color/holo_purple"
-        android:textStyle="italic|bold"
         android:textSize="35dp"
-        android:gravity="center"
+        android:textStyle="italic|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/missScore"
-        app:layout_constraintVertical_bias="0.015" />
+        app:layout_constraintVertical_bias="0.076" />
 
     <TextView
         android:id="@+id/accuracy"
         android:layout_width="88dp"
-        android:layout_height="60dp"
+        android:layout_height="49dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="168dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="136dp"
         android:gravity="center"
         android:text="85%"
         android:textColor="@android:color/holo_purple"
@@ -180,14 +179,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalScore"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/totalScoreTitle"
         android:layout_width="192dp"
         android:layout_height="58dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="Total Score"
@@ -195,7 +194,7 @@
         android:textSize="35dp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toStartOf="@+id/totalScore"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -214,8 +213,8 @@
         android:textStyle="italic|bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/accuracy"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalScoreTitle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.281" />
 </android.support.constraint.ConstraintLayout>

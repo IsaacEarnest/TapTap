@@ -6,22 +6,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = "ScoreActivity";
-
-    int great, okay, bad, miss;
-    double accuracy;
-
-    ScoreActivity(){
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         initOnClickListener();
+        populateTextViews();
     }
 
     private void initOnClickListener(){
@@ -34,9 +29,23 @@ public class ScoreActivity extends AppCompatActivity {
         });
     }
 
-    void initTextViews(){
+    void populateTextViews(){
+        Score s = Score.getInstance();
+        TextView greats = findViewById(R.id.greatScore);
+        TextView oks = findViewById(R.id.okScore);
+        TextView bads = findViewById(R.id.badScore);
+        TextView misses = findViewById(R.id.missScore);
+        TextView accuracy = findViewById(R.id.accuracy);
+        TextView score = findViewById(R.id.totalScore);
 
+        greats.setText(""+s.getTotalGreats());
+        oks.setText(""+s.getTotalOks());
+        bads.setText(""+s.getTotalBads());
+        misses.setText(""+s.getTotalMisses());
+        accuracy.setText(""+s.getAccuracy()+"%");
+        score.setText(""+s.getTotalScore());
     }
+
 
     private void toMainMenu(){
         Log.d(TAG,"toMainMenu: Opening main menu");

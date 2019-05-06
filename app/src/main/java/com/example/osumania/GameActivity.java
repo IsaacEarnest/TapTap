@@ -30,7 +30,7 @@ public class GameActivity extends AppCompatActivity {
     private MediaPlayer mpSong;
     private ArrayList<ImageView> notes;
     private String crystalia, tutorial, asu;
-    private int first,second,third,fourth,score,startTime,comboCount;
+    private int first,second,third,fourth,comboCount;
     private TextView userScore;
     private final Handler handler = new Handler();
 
@@ -39,14 +39,11 @@ public class GameActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_game);
+
             initUIComponents();
             initOnTouchListeners();
             startGame();
-            startTime = g.getCurTimeMil();
-
-
             comboCount = 0;
-            score = 0;
             initKeysComponents();
             initNotes();
             initHandler();
@@ -71,8 +68,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void initNotes(){
         notes = new ArrayList<>();
-
-
         n = new Notes(g.getAllNotes());
     }
 
@@ -81,10 +76,10 @@ public class GameActivity extends AppCompatActivity {
         String song = extras.getString("SONGNAME");
         InputStream songInput = getAssets().open(song);
         g = new Game(songInput);
-        asu = "Songs/Asu no Yozora/Asu no Yozora[Hard].osu";
-        crystalia = "Songs/Crystalia/Crystalia [Hyper].osu";
+        asu = "Songs/Asu no Yozora/Asu no Yozora[Normal].osu";
+        crystalia = "Songs/Crystalia/Crystalia[Normal].osu";
         tutorial = "Songs/Tutorial/tutorial[4K Basics].osu";
-
+        //mediaplayers need context, must be started in the GameActivity
         if(song.equals(asu))
             mpSong = MediaPlayer.create(this,R.raw.asunoyozora);
         if(song.equals(crystalia))
@@ -92,6 +87,7 @@ public class GameActivity extends AppCompatActivity {
         if(song.equals(tutorial))
             mpSong = MediaPlayer.create(this,R.raw.tutorial);
         mpSong.start();
+
     }
 
     private void initHandler(){
@@ -117,8 +113,12 @@ public class GameActivity extends AppCompatActivity {
                         createNote(fourth);
                         n.toNextNote(fourth);
                     }
-                    g.checkForMiss();
+                    if (g.checkForMiss()){
+                        comboCount=0;
+                        combo.setText(""+comboCount);
+                    }
                 }else{
+                    //
                     toScoreScreen();
                 }
                 moveNote(g.getScrollSpeed());
@@ -138,7 +138,6 @@ public class GameActivity extends AppCompatActivity {
         second=192;
         third=320;
         fourth=448;
-
     }
 
     @Override
@@ -201,15 +200,12 @@ public class GameActivity extends AppCompatActivity {
     void updateCombo(Game.keys keyPos){
         if (!g.wasTest(keyPos)){
             comboCount++;
-            score ++;
-            userScore.setText(Integer.toString(score));
         }
         combo.setText(""+comboCount);
         userScore.setText(""+Score.getAccuracy()+"%");
     }
 
     private void moveNote(int speed) {
-        int curTime = g.getCurTimeMil();
         int belowScreen = 3000;
         for (ImageView i : notes) {
             if (i.getY() < belowScreen) {
