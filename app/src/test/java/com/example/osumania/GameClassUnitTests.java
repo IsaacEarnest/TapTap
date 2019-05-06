@@ -30,19 +30,19 @@ public class GameClassUnitTests {
 
     }
 
-    @Test
+   @Test
     public void calculateAccuracyTest() { //works when calcAccuracy returns a double
         double greatScore = 200.0;
         double okScore = 400.0;
         double badScore = 600.0;
-        System.out.println("Unit test result = " + game.calcAccuracy(greatScore));
-        assertEquals(1.0, game.calcAccuracy(greatScore));
-        System.out.println("Unit test result = " + game.calcAccuracy(okScore));
-        assertEquals(0.8333333333333334, game.calcAccuracy(okScore));
-        System.out.println("Unit test result = " + game.calcAccuracy(badScore));
-        assertEquals(0.6666666666666666, game.calcAccuracy(badScore));
+        game.calcAccuracy(greatScore);
+        assertEquals(1.0, accuracy);
+        game.calcAccuracy(okScore);
+        assertEquals(0.8333333333333334, accuracy);
+        game.calcAccuracy(badScore);
+        assertEquals(0.6666666666666666, accuracy);
     }
-*/
+
     @Test
     public void getCurTimeMilTest(){
         System.out.println("getCurTimeMilTest = " + game.getCurTimeMil());
