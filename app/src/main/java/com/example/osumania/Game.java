@@ -8,33 +8,26 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
-    private double greatMargin, okMargin, badMargin, missMargin, greatScore, okScore, badScore;
-    private int totalGreats, totalOks, totalBads, scrollSpeed, totalNotesHit, score;
+    private int scrollSpeed;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
-    public double startTime,accuracy;
-    ArrayList<Integer> first,second,third,fourth;
-    ArrayList<Notes> notes;
+    private double startTime;
+    private Notes n;
+    private Score score;
+    private ArrayList<Integer> first,second,third,fourth;
 
 
     public Game(InputStream input) throws IOException {
         initVariables();
         initArrayLists();
         parseSongFile(input);
+        n = new Notes(getAllNotes());
     }
 
     private void initVariables(){
         this.scrollSpeed = 50;
-        greatMargin = 200;
-        okMargin = 400;
-        badMargin = 600;
-        missMargin = 1500;
-
-        greatScore = 300;
-        okScore = 200;
-        badScore = 100;
-
         startTime = System.currentTimeMillis();
+        score = Score.getInstance();
     }
 
     private void initArrayLists(){
@@ -42,7 +35,6 @@ public class Game {
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
-        notes = new ArrayList<>();
     }
 
     public int getCurTimeMil(){
@@ -58,23 +50,6 @@ public class Game {
         return allNotes;
     }
 
-    public ArrayList<Integer> getFirstRow(){
-        return (ArrayList<Integer>)first.clone();
-    }
-
-    public ArrayList<Integer> getSecondRow(){
-        return (ArrayList<Integer>)second.clone();
-    }
-
-    public ArrayList<Integer> getThirdRow(){
-        return (ArrayList<Integer>)third.clone();
-    }
-
-    public ArrayList<Integer> getFourthRow(){
-        return (ArrayList<Integer>)fourth.clone();
-    }
-
-    //TODO maybe unit testable? idk
     public boolean wasMiss(keys pos){
         return findHitAcc(pos).equals("miss");
     }
@@ -84,116 +59,113 @@ public class Game {
     }
 
     public double getCurrentTime() {
-        return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
+        double lagCompensation = 1400;
+        return System.currentTimeMillis()-startTime+lagCompensation;
     }
 
-    //TODO score should really be a singleton class
-    public double getAccuracy(){
-        return accuracy;
+    public void checkForMiss(){
+        checkForMissHelper(64);
+        checkForMissHelper(192);
+        checkForMissHelper(320);
+        checkForMissHelper(448);
+    }
+    private void checkForMissHelper(int pos){
+        if(getCurrentTime()-n.getCurrentNote(pos)> score.getMissMargin()){
+            n.toNextNote(pos);
+            Log.d(TAG,"Note missed on "+pos+" row.");
+        }
     }
 
-    public int getTotalGreats () {
-        return totalGreats;
-    }
-
-    public int getTotalOks () {
-        return totalOks;
-    }
-
-    public int getTotalBads () {
-        return totalBads;
-    }
-
-    public int getTotalMisses () {
-        int misses = totalNotesHit - totalGreats - totalOks - totalBads;
-        return misses;
-    }
-
-    public String hitMarginString (ArrayList <Integer> position){
+    private String hitMarginString(int pos) {
         double currentTime = getCurrentTime();
-        for (Integer i : position) {
-            //Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
-            if (Math.abs(i - currentTime) < greatMargin) {
-                //Log.d(TAG,"returning great");
-                calcAccuracy(greatMargin);
-                score += greatScore;
+            Log.d(TAG, "your hit = " + currentTime+", note was at "+n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getGreatMargin()) {
+                Log.d(TAG,"returning great");
+                score.onGreatHit();
                 return "great";
             }
-            if (Math.abs(i - currentTime) < okMargin) {
-                //Log.d(TAG,"returning ok");
-                calcAccuracy(okMargin);
-                score += okScore;
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getOkMargin()) {
+                Log.d(TAG,"returning ok");
+                score.onOkHit();
                 return "ok";
             }
-            if (Math.abs(i - currentTime) < badMargin) {
-                //Log.d(TAG,"returning bad");
-                calcAccuracy(badMargin);
-                score += badScore;
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getBadMargin()) {
+                Log.d(TAG,"returning bad");
+                score.onBadHit();
                 return "bad";
             }
-            if (Math.abs(i - currentTime) < missMargin) {
-                //Log.d(TAG,"returning miss");
-                calcAccuracy(missMargin);
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getMissMargin()) {
+                Log.d(TAG,"returning miss");
+                score.onMiss();
                 return "miss";
             }
-            position.remove(i);
-        }
-        //Log.d(TAG,"returning test");
+
+        Log.d(TAG,"returning test");
         return "test";
     }
 
-    void calcAccuracy(double acc){
-        totalNotesHit++;
-        if (acc == greatMargin) totalGreats++;
-        else if (acc == okMargin) totalOks++;
-        else if (acc == badMargin) totalBads++;
-        accuracy = (greatScore * totalGreats + okScore * totalOks + badScore * totalBads) / (greatScore * totalNotesHit);
-    }
-
-    String findHitAcc (keys pos) throws NullPointerException {
+    private String findHitAcc(keys pos) throws NullPointerException {
+        //TODO remove magic #s
         if (pos.equals(keys.firstK)) {
-            return hitMarginString(first);
+            return hitMarginString(64);
         } else if (pos.equals(keys.secondK)) {
-            return hitMarginString(second);
+            return hitMarginString(192);
         } else if (pos.equals(keys.thirdK)) {
-            return hitMarginString(third);
+            return hitMarginString(320);
         } else if (pos.equals(keys.fourthK)) {
-            return hitMarginString(fourth);
+            return hitMarginString(448);
         }
         return "test";
     }
+            private void parseSongFile (InputStream input) throws IOException {
+                Log.d(TAG,"parsing");
+                String line = "";
+                String firstRow = "64";
+                String secondRow = "192";
+                String thirdRow = "320";
+                String fourthRow = "448";
+                int lastNoteTime = 0;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                Log.d(TAG, "File open for business!");
+                //Skipping lines which aren't related to hitObjects
+                while (!reader.readLine().equals("[HitObjects]")) {
+                }
+                //Adding Notes
+                while ((line = reader.readLine()) != null) {
+                    if (line.split(",")[0].equals(firstRow)) {
+                        String noteTime = line.split(",")[2];
+                        first.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                    if (line.split(",")[0].equals(secondRow)) {
+                        String noteTime = line.split(",")[2];
+                        second.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                    if (line.split(",")[0].equals(thirdRow)) {
+                        String noteTime = line.split(",")[2];
+                        third.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                    if (line.split(",")[0].equals(fourthRow)) {
+                        String noteTime = line.split(",")[2];
+                        fourth.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                }
+                //lets map end a few seconds after song finishes
+                //extra note does not impact gameplay, user never sees it
+                addSongFinish(lastNoteTime);
 
-    public void parseSongFile (InputStream input) throws IOException {
-        //Log.d(TAG,"parsing");
-        String line = "";
-        String firstRow = "64";
-        String secondRow = "192";
-        String thirdRow = "320";
-        String fourthRow = "448";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        //Log.d(TAG, "File open for business!");
-        //Skipping lines which aren't related to hitObjects
-        while (!reader.readLine().equals("[HitObjects]")) {
-        }
-        //Adding Notes
-        while ((line = reader.readLine()) != null) {
-            if (line.split(",")[0].equals(firstRow)) {
-                first.add(Integer.parseInt(line.split(",")[2]));
             }
-            if (line.split(",")[0].equals(secondRow)) {
-                second.add(Integer.parseInt(line.split(",")[2]));
+            private void addSongFinish(int lastNoteTime){
+                first.add(lastNoteTime+5000);
+                second.add(lastNoteTime+5000);
+                third.add(lastNoteTime+5000);
+                fourth.add(lastNoteTime+5000);
             }
-            if (line.split(",")[0].equals(thirdRow)) {
-                third.add(Integer.parseInt(line.split(",")[2]));
+            public int getScrollSpeed () {
+                return scrollSpeed;
             }
-            if (line.split(",")[0].equals(fourthRow)) {
-                fourth.add(Integer.parseInt(line.split(",")[2]));
-            }
-        }
-    }
-
-    public int getScrollSpeed () {
-        return scrollSpeed;
-    }
 }
 

@@ -117,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
                         createNote(fourth);
                         n.toNextNote(fourth);
                     }
+                    g.checkForMiss();
                 }else{
                     toScoreScreen();
                 }
@@ -127,10 +128,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toScoreScreen(){
-        Log.d(TAG,"toScoreScreen: Opening score activity"+g.getAccuracy());
+        Log.d(TAG,"toScoreScreen: Opening score activity");
         Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra("ACCURACY", g.getAccuracy());
-        intent.putExtra("GREATS", g.getAccuracy());
         startActivity(intent);
     }
 
@@ -200,19 +199,15 @@ public class GameActivity extends AppCompatActivity {
 
     //TODO unit testable
     void updateCombo(Game.keys keyPos){
-        if(g.wasMiss(keyPos)) {
-            comboCount = 0;
-        }
-        else if (!g.wasTest(keyPos)){
+        if (!g.wasTest(keyPos)){
             comboCount++;
             score ++;
             userScore.setText(Integer.toString(score));
         }
         combo.setText(""+comboCount);
+        userScore.setText(""+Score.getAccuracy()+"%");
     }
 
-    //TODO probably tough to unit test since UI components are directly involved
-    //can maybe set dummy variables for y
     private void moveNote(int speed) {
         int curTime = g.getCurTimeMil();
         int belowScreen = 3000;
