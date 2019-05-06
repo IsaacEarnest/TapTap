@@ -167,5 +167,5 @@ public class Game {
             public int getScrollSpeed () {
                 return scrollSpeed;
             }
-        }
+}
 

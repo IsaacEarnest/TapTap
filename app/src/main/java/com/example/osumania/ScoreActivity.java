@@ -10,6 +10,13 @@ import android.widget.Button;
 public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = "ScoreActivity";
 
+    int great, okay, bad, miss;
+    double accuracy;
+
+    ScoreActivity(){
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +34,15 @@ public class ScoreActivity extends AppCompatActivity {
         });
     }
 
+    void initTextViews(){
+
+    }
+
     private void toMainMenu(){
         Log.d(TAG,"toMainMenu: Opening main menu");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
 }

@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
     tools:context=".ScoreActivity">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/Title"
+        android:layout_width="229dp"
+        android:layout_height="64dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Accuracy"
+        android:text="Results"
+        android:textSize="55dp"
+        android:gravity="center"
+        android:textStyle="bold|italic"
+        android:textColor="@android:color/holo_purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,52 +31,64 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
         android:text="Return to Menu"
+        android:textStyle="italic|bold"
+        android:textColor="@android:color/holo_orange_light"
+        android:background="@android:color/holo_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/greatScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         android:text="300s/Greats"
+        android:textSize="20dp"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/okScore"
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
+        android:layout_height="28dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:text="200s/OKs"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="20dp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.828"
+        app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/greatScore" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/badScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:text="100s/Bads"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="20dp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.825"
+        app:layout_constraintHorizontal_bias="0.787"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/okScore" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/missScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -79,12 +96,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Misses"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="20dp"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/toMenu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.771"
+        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintTop_toBottomOf="@+id/badScore"
+        app:layout_constraintVertical_bias="0.106" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -127,4 +147,75 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/mania_hit0" />
+
+    <TextView
+        android:id="@+id/totalScore"
+        android:layout_width="90dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:text="250"
+        android:textColor="@android:color/holo_purple"
+        android:textStyle="italic|bold"
+        android:textSize="35dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/missScore"
+        app:layout_constraintVertical_bias="0.015" />
+
+    <TextView
+        android:id="@+id/accuracy"
+        android:layout_width="88dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="168dp"
+        android:gravity="center"
+        android:text="85%"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="35dp"
+        android:textStyle="italic|bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalScore"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/totalScoreTitle"
+        android:layout_width="192dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Total Score"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="35dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toStartOf="@+id/totalScore"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/accuracyTitle"
+        android:layout_width="168dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Accuracy"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="35dp"
+        android:textStyle="italic|bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/accuracy"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalScoreTitle"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
