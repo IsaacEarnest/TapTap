@@ -84,7 +84,7 @@ public class Game {
         return false;
     }
 
-    private String hitMarginString(int pos) {
+    String hitMarginString(int pos) {
         double currentTime = getCurrentTime();
             Log.d(TAG, "User's hit = " + currentTime+", note was at "+
                     n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
@@ -104,7 +104,6 @@ public class Game {
                 score.onBadHit();
                 return "bad";
             }
-
         Log.d(TAG,"returning test");
         return "test";
     }

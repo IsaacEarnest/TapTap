@@ -11,22 +11,14 @@ import android.widget.TextView;
 public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = "ScoreActivity";
 
+    Score score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        score = new Score();
         setContentView(R.layout.activity_score);
-        initOnClickListener();
         populateTextViews();
-    }
-
-    private void initOnClickListener(){
-        final Button toMenu = findViewById(R.id.toMenu);
-        toMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toMainMenu();
-            }
-        });
+        initOnClickListener();
     }
 
     void populateTextViews(){
@@ -44,8 +36,18 @@ public class ScoreActivity extends AppCompatActivity {
         misses.setText(""+s.getTotalMisses());
         accuracy.setText(""+s.getAccuracy()+"%");
         score.setText(""+s.getTotalScore());
+
     }
 
+    private void initOnClickListener(){
+        final Button toMenu = findViewById(R.id.toMenu);
+        toMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toMainMenu();
+            }
+        });
+    }
 
     private void toMainMenu(){
         Log.d(TAG,"toMainMenu: Opening main menu");

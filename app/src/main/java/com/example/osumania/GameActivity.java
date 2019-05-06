@@ -196,13 +196,12 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    //TODO unit testable
     void updateCombo(Game.keys keyPos){
         if (!g.wasTest(keyPos)){
             comboCount++;
         }
-        combo.setText(""+comboCount);
-        userScore.setText(""+Score.getAccuracy()+"%");
+        combo.setText(String.valueOf(comboCount));
+        userScore.setText(String.valueOf(Score.getAccuracy())+"%");
     }
 
     private void moveNote(int speed) {
