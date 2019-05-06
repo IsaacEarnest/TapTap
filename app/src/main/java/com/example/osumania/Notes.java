@@ -1,7 +1,5 @@
 package com.example.osumania;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class Notes {
@@ -9,23 +7,13 @@ public class Notes {
 
     private ArrayList<Integer> first, second, third, fourth;
 
-    private static Notes single_instance = null;
-
-    private Notes(ArrayList<ArrayList<Integer>> allRows){
+    public Notes(ArrayList<ArrayList<Integer>> allRows){
         this.first = allRows.get(0);
         this.second = allRows.get(1);
         this.third = allRows.get(2);
         this.fourth = allRows.get(3);
     }
 
-
-    public static Notes getInstance(ArrayList<ArrayList<Integer>> allRows)
-    {
-        if (single_instance == null)
-            single_instance = new Notes(allRows);
-
-        return single_instance;
-    }
     public int toNextNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case 64:
@@ -39,6 +27,7 @@ public class Notes {
         }
         throw new IllegalArgumentException("toNextNote has received an invalid position.");
     }
+
     public int getCurrentNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case 64:
@@ -53,7 +42,7 @@ public class Notes {
         throw new IllegalArgumentException("getCurrentNote has received an invalid position.");
     }
     public boolean hasNotes(){
-        return !(first.isEmpty()||second.isEmpty()||third.isEmpty()||fourth.isEmpty());
+        return !(first.isEmpty() || second.isEmpty() || third.isEmpty() || fourth.isEmpty());
     }
 
 }

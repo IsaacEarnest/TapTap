@@ -4,16 +4,16 @@ public class Score {
 
     private static Score single_instance = null;
 
-    private double greatMargin, okMargin, badMargin, missMargin;
-    private int totalGreats, totalOks, totalBads, totalNotesHit, totalScore;
-    private double greatScore, okScore, badScore, accuracy;
+    private static double greatMargin, okMargin, badMargin, missMargin;
+    private static int totalGreats, totalOks, totalBads, totalNotesHit, totalScore;
+    private static double greatScore, okScore, badScore, accuracy;
 
     private Score()
     {
-        greatMargin = 50;
-        okMargin = 80;
-        badMargin = 100;
-        missMargin = 120;
+        greatMargin = 100;
+        okMargin = 160;
+        badMargin = 200;
+        missMargin = 240;
         totalGreats = 0;
         totalOks = 0;
         totalBads = 0;
@@ -99,5 +99,8 @@ public class Score {
         else if(acc==okMargin)totalOks++;
         else if(acc==badMargin)totalBads++;
         accuracy = toPercent*(greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
+    }
+    public static double getAccuracy(){
+        return accuracy;
     }
 }

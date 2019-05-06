@@ -15,19 +15,18 @@ public class Game {
     private Notes n;
     private Score score;
     private ArrayList<Integer> first,second,third,fourth;
-    private ArrayList<Notes> notes;
+
 
     public Game(InputStream input) throws IOException {
-
         initVariables();
         initArrayLists();
         parseSongFile(input);
+        n = new Notes(getAllNotes());
     }
 
     private void initVariables(){
         this.scrollSpeed = 50;
         startTime = System.currentTimeMillis();
-        n = Notes.getInstance(getAllNotes());
         score = Score.getInstance();
     }
 
@@ -36,11 +35,12 @@ public class Game {
         second = new ArrayList<>();
         third = new ArrayList<>();
         fourth = new ArrayList<>();
-        notes = new ArrayList<>();
     }
+
     public int getCurTimeMil(){
         return (int)((System.currentTimeMillis())-startTime);
     }
+
     public ArrayList<ArrayList<Integer>> getAllNotes(){
         ArrayList<ArrayList<Integer>> allNotes = new ArrayList<>();
         allNotes.add(first);
@@ -50,23 +50,6 @@ public class Game {
         return allNotes;
     }
 
-    public ArrayList<Integer> getFirstRow(){
-        return (ArrayList<Integer>)first.clone();
-    }
-
-    public ArrayList<Integer> getSecondRow(){
-        return (ArrayList<Integer>)second.clone();
-    }
-
-    public ArrayList<Integer> getThirdRow(){
-        return (ArrayList<Integer>)third.clone();
-    }
-
-    public ArrayList<Integer> getFourthRow(){
-        return (ArrayList<Integer>)fourth.clone();
-    }
-
-    //TODO maybe unit testable? idk
     public boolean wasMiss(keys pos){
         return findHitAcc(pos).equals("miss");
     }
@@ -75,18 +58,21 @@ public class Game {
         return findHitAcc(pos).equals("test");
     }
 
-    private double getCurrentTime() {
-        return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
+    public double getCurrentTime() {
+        double lagCompensation = 1400;
+        return System.currentTimeMillis()-startTime+lagCompensation;
     }
 
-    private String hitMargin(){
-        //if (Math.abs(n. - currentTime) < greatMargin) {
-return null;
-        }
-
-    public void checkForMiss(int pos){
-        if(checkMillisDiff(pos)>300){
+    public void checkForMiss(){
+        checkForMissHelper(64);
+        checkForMissHelper(192);
+        checkForMissHelper(320);
+        checkForMissHelper(448);
+    }
+    private void checkForMissHelper(int pos){
+        if(getCurrentTime()-n.getCurrentNote(pos)> score.getMissMargin()){
             n.toNextNote(pos);
+            Log.d(TAG,"Note missed on "+pos+" row.");
         }
     }
 
@@ -117,46 +103,69 @@ return null;
         Log.d(TAG,"returning test");
         return "test";
     }
-=
+
     private String findHitAcc(keys pos) throws NullPointerException {
+        //TODO remove magic #s
         if (pos.equals(keys.firstK)) {
-            return hitMarginString(first);
+            return hitMarginString(64);
         } else if (pos.equals(keys.secondK)) {
-            return hitMarginString(second);
+            return hitMarginString(192);
         } else if (pos.equals(keys.thirdK)) {
-            return hitMarginString(third);
+            return hitMarginString(320);
         } else if (pos.equals(keys.fourthK)) {
-            return hitMarginString(fourth);
+            return hitMarginString(448);
         }
         return "test";
     }
-
-    public void parseSongFile(InputStream input) throws IOException {
-        //Log.d(TAG,"parsing");
-        String line = "";
-        String firstRow = "64";
-        String secondRow = "192";
-        String thirdRow = "320";
-        String fourthRow = "448";
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            //Log.d(TAG, "File open for business!");
-            //Skipping lines which aren't related to hitObjects
-            while (!reader.readLine().equals("[HitObjects]")) {}
-            //Adding Notes
-            while ((line = reader.readLine()) != null) {
-                if (line.split(",")[0].equals(firstRow)) {
-                    first.add(Integer.parseInt(line.split(",")[2]));
-                }if (line.split(",")[0].equals(secondRow)) {
-                    second.add(Integer.parseInt(line.split(",")[2]));
-                }if (line.split(",")[0].equals(thirdRow)) {
-                    third.add(Integer.parseInt(line.split(",")[2]));
-                }if (line.split(",")[0].equals(fourthRow)) {
-                    fourth.add(Integer.parseInt(line.split(",")[2]));
+            private void parseSongFile (InputStream input) throws IOException {
+                Log.d(TAG,"parsing");
+                String line = "";
+                String firstRow = "64";
+                String secondRow = "192";
+                String thirdRow = "320";
+                String fourthRow = "448";
+                int lastNoteTime = 0;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                Log.d(TAG, "File open for business!");
+                //Skipping lines which aren't related to hitObjects
+                while (!reader.readLine().equals("[HitObjects]")) {
+                }
+                //Adding Notes
+                while ((line = reader.readLine()) != null) {
+                    if (line.split(",")[0].equals(firstRow)) {
+                        String noteTime = line.split(",")[2];
+                        first.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
                     }
-            }
-    }
+                    if (line.split(",")[0].equals(secondRow)) {
+                        String noteTime = line.split(",")[2];
+                        second.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                    if (line.split(",")[0].equals(thirdRow)) {
+                        String noteTime = line.split(",")[2];
+                        third.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                    if (line.split(",")[0].equals(fourthRow)) {
+                        String noteTime = line.split(",")[2];
+                        fourth.add(Integer.parseInt(noteTime));
+                        lastNoteTime = Integer.parseInt(noteTime);
+                    }
+                }
+                //lets map end a few seconds after song finishes
+                //extra note does not impact gameplay, user never sees it
+                addSongFinish(lastNoteTime);
 
-    public int getScrollSpeed(){
-        return scrollSpeed;
-    }
-}
+            }
+            private void addSongFinish(int lastNoteTime){
+                first.add(lastNoteTime+5000);
+                second.add(lastNoteTime+5000);
+                third.add(lastNoteTime+5000);
+                fourth.add(lastNoteTime+5000);
+            }
+            public int getScrollSpeed () {
+                return scrollSpeed;
+            }
+        }
+

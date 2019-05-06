@@ -30,12 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private MediaPlayer mpSong;
     private ArrayList<ImageView> notes;
     private String crystalia, tutorial, asu;
-    private int comboCount;
-    private int first,second,third,fourth;
-    private int score;
+    private int first,second,third,fourth,score,startTime,comboCount;
     private TextView userScore;
-
-    private int startTime;
     private final Handler handler = new Handler();
 
     @Override
@@ -121,22 +117,22 @@ public class GameActivity extends AppCompatActivity {
                         createNote(fourth);
                         n.toNextNote(fourth);
                     }
+                    g.checkForMiss();
                 }else{
                     toScoreScreen();
                 }
-                g.checkForMiss();
                 moveNote(g.getScrollSpeed());
                 handler.postDelayed(this, delay);
             }
         }, delay);
     }
+
     private void toScoreScreen(){
-        Log.d(TAG,"toScoreScreen: Opening score activity"+g.getAccuracy());
+        Log.d(TAG,"toScoreScreen: Opening score activity");
         Intent intent = new Intent(this, ScoreActivity.class);
-        intent.putExtra("ACCURACY", g.getAccuracy());
-        intent.putExtra("GREATS", g.getAccuracy());
         startActivity(intent);
     }
+
     private void initKeysComponents(){
         first=64;
         second=192;
@@ -151,7 +147,6 @@ public class GameActivity extends AppCompatActivity {
         mpSong.stop();
         handler.removeCallbacksAndMessages(null);
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private void initOnTouchListeners(){
@@ -204,19 +199,15 @@ public class GameActivity extends AppCompatActivity {
 
     //TODO unit testable
     void updateCombo(Game.keys keyPos){
-        if(g.wasMiss(keyPos)) {
-            comboCount = 0;
-        }
-        else if (!g.wasTest(keyPos)){
+        if (!g.wasTest(keyPos)){
             comboCount++;
             score ++;
             userScore.setText(Integer.toString(score));
         }
         combo.setText(""+comboCount);
+        userScore.setText(""+Score.getAccuracy()+"%");
     }
 
-//TODO probably tough to unit test since UI components are directly involved
-    //can maybe set dummy variables for y
     private void moveNote(int speed) {
         int curTime = g.getCurTimeMil();
         int belowScreen = 3000;
