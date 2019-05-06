@@ -124,6 +124,7 @@ public class GameActivity extends AppCompatActivity {
                 }else{
                     toScoreScreen();
                 }
+                g.checkForMiss();
                 moveNote(g.getScrollSpeed());
                 handler.postDelayed(this, delay);
             }

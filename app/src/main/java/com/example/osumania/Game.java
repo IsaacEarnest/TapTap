@@ -8,18 +8,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Game {
-    private double greatMargin, okMargin, badMargin, missMargin;
-    private int totalGreats, totalOks, totalBads;
-    private double greatScore, okScore, badScore;
     private int scrollSpeed;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
     private double startTime;
-    private double accuracy;
-    private int totalNotesHit;
-    private int score;
-    ArrayList<Integer> first,second,third,fourth;
-    ArrayList<Notes> notes;
+    private Notes n;
+    private Score score;
+    private ArrayList<Integer> first,second,third,fourth;
+    private ArrayList<Notes> notes;
 
     public Game(InputStream input) throws IOException {
 
@@ -30,14 +26,9 @@ public class Game {
 
     private void initVariables(){
         this.scrollSpeed = 50;
-        greatMargin = 200;
-        greatScore = 300;
-        okMargin = 400;
-        okScore = 200;
-        badMargin = 600;
-        badScore = 100;
-        missMargin = 1500;
         startTime = System.currentTimeMillis();
+        n = Notes.getInstance(getAllNotes());
+        score = Score.getInstance();
     }
 
     private void initArrayLists(){
@@ -87,67 +78,46 @@ public class Game {
     private double getCurrentTime() {
         return System.currentTimeMillis() - startTime + 14 * scrollSpeed - 1000;
     }
-    //TODO score should really be a singleton class
-    public double getAccuracy(){
-        return accuracy;
-    }
-    public int getTotalGreats(){
-        return totalGreats;
-    }
-    public int getTotalOks(){
-        return totalOks;
-    }
-    public int getTotalBads(){
-        return totalBads;
-    }
-    public int getTotalMisses(){
-        int misses = totalNotesHit-totalGreats-totalOks-totalBads;
-        return misses;
+
+    private String hitMargin(){
+        //if (Math.abs(n. - currentTime) < greatMargin) {
+return null;
+        }
+
+    public void checkForMiss(int pos){
+        if(checkMillisDiff(pos)>300){
+            n.toNextNote(pos);
+        }
     }
 
-    private String hitMarginString(ArrayList<Integer> position) {
+    private String hitMarginString(int pos) {
         double currentTime = getCurrentTime();
-        for (Integer i : position) {
-            Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
-            if (Math.abs(i - currentTime) < greatMargin) {
+            Log.d(TAG, "your hit = " + currentTime+", note was at "+n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getGreatMargin()) {
                 Log.d(TAG,"returning great");
-                position.remove(i);
-                calcAccuracy(greatMargin);
-                score += greatScore;
+                score.onGreatHit();
                 return "great";
             }
-            if (Math.abs(i - currentTime) < okMargin) {
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getOkMargin()) {
                 Log.d(TAG,"returning ok");
-                position.remove(i);
-                calcAccuracy(okMargin);
-                score += okScore;
+                score.onOkHit();
                 return "ok";
             }
-            if (Math.abs(i - currentTime) < badMargin) {
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getBadMargin()) {
                 Log.d(TAG,"returning bad");
-                position.remove(i);
-                calcAccuracy(badMargin);
-                score += badScore;
+                score.onBadHit();
                 return "bad";
             }
-            if (Math.abs(i - currentTime) < missMargin) {
+            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getMissMargin()) {
                 Log.d(TAG,"returning miss");
-                position.remove(i);
-                calcAccuracy(missMargin);
+                score.onMiss();
                 return "miss";
             }
-        }
+
         Log.d(TAG,"returning test");
         return "test";
     }
-    //TODO unit test this
-    private void calcAccuracy(double acc){
-        totalNotesHit++;
-        if(acc==greatMargin)totalGreats++;
-        else if(acc==okMargin)totalOks++;
-        else if(acc==badMargin)totalBads++;
-        accuracy = (greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
-    }
+=
     private String findHitAcc(keys pos) throws NullPointerException {
         if (pos.equals(keys.firstK)) {
             return hitMarginString(first);
