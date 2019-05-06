@@ -6,21 +6,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = "ScoreActivity";
 
-    int great, okay, bad, miss;
+    int great, ok, bad, miss, total;
     double accuracy;
+    Score score;
 
-    ScoreActivity(){
-
-    }
+    TextView greatScore;
+    TextView okScore;
+    TextView badScore;
+    TextView missScore;
+    TextView totalScore;
+    TextView accuracyPercentage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        score = new Score();
         setContentView(R.layout.activity_score);
+        initTextViews();
+        initVariables();
+        populateViews();
         initOnClickListener();
     }
 
@@ -35,7 +44,21 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     void initTextViews(){
+        greatScore = findViewById(R.id.greatScore);
+        okScore = findViewById(R.id.okScore);
+        badScore = findViewById(R.id.badScore);
+        missScore = findViewById(R.id.missScore);
+        totalScore = findViewById(R.id.totalScore);
+        accuracyPercentage = findViewById(R.id.accuracy);
+    }
 
+    void initVariables(){
+        great = score.getTotalGreats();
+        ok = score.getTotalOks();
+        bad = score.getTotalBads();
+        miss = score.getTotalMisses();
+        total = score.getTotalNotesHit();
+        accuracy = score.getAccuracy();
     }
 
     private void toMainMenu(){
@@ -44,5 +67,14 @@ public class ScoreActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    void populateViews(){
+        greatScore.setText(String.valueOf(great));
+        okScore.setText(String.valueOf(ok));
+        badScore.setText(String.valueOf(bad));
+        missScore.setText(String.valueOf(miss));
+        totalScore.setText(String.valueOf(total));
+        accuracyPercentage.setText(String.valueOf(accuracy));
+    }
 
 }

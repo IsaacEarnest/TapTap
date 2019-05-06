@@ -4,11 +4,11 @@ public class Score {
 
     private static Score single_instance = null;
 
-    private static double greatMargin, okMargin, badMargin, missMargin;
-    private static int totalGreats, totalOks, totalBads, totalNotesHit, totalScore;
-    private static double greatScore, okScore, badScore, accuracy;
+    static double greatMargin, okMargin, badMargin, missMargin;
+    static int totalGreats, totalOks, totalBads, totalNotesHit, totalScore;
+    static double greatScore, okScore, badScore, accuracy;
 
-    private Score()
+    public Score()
     {
         greatMargin = 100;
         okMargin = 160;
@@ -92,13 +92,13 @@ public class Score {
     public void onMiss(){
         updateAccuracy(missMargin);
     }
-    private void updateAccuracy(double acc){
+    void updateAccuracy(double acc){
         double toPercent = 100.;
-        totalNotesHit++;
         if(acc==greatMargin)totalGreats++;
         else if(acc==okMargin)totalOks++;
         else if(acc==badMargin)totalBads++;
-        accuracy = toPercent*(greatScore*totalGreats+okScore*totalOks+badScore*totalBads)/(greatScore*totalNotesHit);
+        accuracy = (toPercent*((greatScore*totalGreats)+(okScore*totalOks)+(badScore*totalBads)))/(greatScore*totalNotesHit);
+        totalNotesHit++;
     }
     public static double getAccuracy(){
         return accuracy;

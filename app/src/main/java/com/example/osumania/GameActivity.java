@@ -202,10 +202,10 @@ public class GameActivity extends AppCompatActivity {
         if (!g.wasTest(keyPos)){
             comboCount++;
             score ++;
-            userScore.setText(Integer.toString(score));
+            userScore.setText(String.valueOf(score));
         }
-        combo.setText(""+comboCount);
-        userScore.setText(""+Score.getAccuracy()+"%");
+        combo.setText(String.valueOf(comboCount));
+        userScore.setText(String.valueOf(Score.getAccuracy())+"%");
     }
 
     private void moveNote(int speed) {
