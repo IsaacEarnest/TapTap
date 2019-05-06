@@ -12,7 +12,7 @@ public class Game {
     private int totalGreats, totalOks, totalBads, scrollSpeed, totalNotesHit, score;
     enum keys{firstK, secondK, thirdK, fourthK}
     final String TAG = "GameClass";
-    private double startTime,accuracy;
+    public double startTime,accuracy;
     ArrayList<Integer> first,second,third,fourth;
     ArrayList<Notes> notes;
 
@@ -92,109 +92,108 @@ public class Game {
         return accuracy;
     }
 
-        double currentTime = getCurTimeMil();
-        public int getTotalGreats () {
-            return totalGreats;
-        }
+    public int getTotalGreats () {
+        return totalGreats;
+    }
 
-        public int getTotalOks () {
-            return totalOks;
-        }
+    public int getTotalOks () {
+        return totalOks;
+    }
 
-        public int getTotalBads () {
-            return totalBads;
-        }
+    public int getTotalBads () {
+        return totalBads;
+    }
 
-        public int getTotalMisses () {
-            int misses = totalNotesHit - totalGreats - totalOks - totalBads;
-            return misses;
-        }
+    public int getTotalMisses () {
+        int misses = totalNotesHit - totalGreats - totalOks - totalBads;
+        return misses;
+    }
 
-        private String hitMarginString (ArrayList <Integer> position){
-            double currentTime = getCurrentTime();
-            for (Integer i : position) {
-                //Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
-                if (Math.abs(i - currentTime) < greatMargin) {
-                    //Log.d(TAG,"returning great");
-                    calcAccuracy(greatMargin);
-                    score += greatScore;
-                    return "great";
-                }
-                if (Math.abs(i - currentTime) < okMargin) {
-                    //Log.d(TAG,"returning ok");
-                    calcAccuracy(okMargin);
-                    score += okScore;
-                    return "ok";
-                }
-                if (Math.abs(i - currentTime) < badMargin) {
-                    //Log.d(TAG,"returning bad");
-                    calcAccuracy(badMargin);
-                    score += badScore;
-                    return "bad";
-                }
-                if (Math.abs(i - currentTime) < missMargin) {
-                    //Log.d(TAG,"returning miss");
-                    calcAccuracy(missMargin);
-                    return "miss";
-                }
-                position.remove(i);
+    public String hitMarginString (ArrayList <Integer> position){
+        double currentTime = getCurrentTime();
+        for (Integer i : position) {
+            //Log.d(TAG, "your hit = " + currentTime+", note was at "+i+". System is seeing "+Math.abs(i - currentTime)+"ms difference");
+            if (Math.abs(i - currentTime) < greatMargin) {
+                //Log.d(TAG,"returning great");
+                calcAccuracy(greatMargin);
+                score += greatScore;
+                return "great";
             }
-            //Log.d(TAG,"returning test");
-            return "test";
+            if (Math.abs(i - currentTime) < okMargin) {
+                //Log.d(TAG,"returning ok");
+                calcAccuracy(okMargin);
+                score += okScore;
+                return "ok";
+            }
+            if (Math.abs(i - currentTime) < badMargin) {
+                //Log.d(TAG,"returning bad");
+                calcAccuracy(badMargin);
+                score += badScore;
+                return "bad";
+            }
+            if (Math.abs(i - currentTime) < missMargin) {
+                //Log.d(TAG,"returning miss");
+                calcAccuracy(missMargin);
+                return "miss";
+            }
+            position.remove(i);
         }
+        //Log.d(TAG,"returning test");
+        return "test";
+    }
 
-            private void calcAccuracy(double acc){
-                totalNotesHit++;
-                if (acc == greatMargin) totalGreats++;
-                else if (acc == okMargin) totalOks++;
-                else if (acc == badMargin) totalBads++;
-                accuracy = (greatScore * totalGreats + okScore * totalOks + badScore * totalBads) / (greatScore * totalNotesHit);
+    void calcAccuracy(double acc){
+        totalNotesHit++;
+        if (acc == greatMargin) totalGreats++;
+        else if (acc == okMargin) totalOks++;
+        else if (acc == badMargin) totalBads++;
+        accuracy = (greatScore * totalGreats + okScore * totalOks + badScore * totalBads) / (greatScore * totalNotesHit);
+    }
+
+    String findHitAcc (keys pos) throws NullPointerException {
+        if (pos.equals(keys.firstK)) {
+            return hitMarginString(first);
+        } else if (pos.equals(keys.secondK)) {
+            return hitMarginString(second);
+        } else if (pos.equals(keys.thirdK)) {
+            return hitMarginString(third);
+        } else if (pos.equals(keys.fourthK)) {
+            return hitMarginString(fourth);
+        }
+        return "test";
+    }
+
+    public void parseSongFile (InputStream input) throws IOException {
+        //Log.d(TAG,"parsing");
+        String line = "";
+        String firstRow = "64";
+        String secondRow = "192";
+        String thirdRow = "320";
+        String fourthRow = "448";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        //Log.d(TAG, "File open for business!");
+        //Skipping lines which aren't related to hitObjects
+        while (!reader.readLine().equals("[HitObjects]")) {
+        }
+        //Adding Notes
+        while ((line = reader.readLine()) != null) {
+            if (line.split(",")[0].equals(firstRow)) {
+                first.add(Integer.parseInt(line.split(",")[2]));
             }
-
-            private String findHitAcc (keys pos) throws NullPointerException {
-                if (pos.equals(keys.firstK)) {
-                    return hitMarginString(first);
-                } else if (pos.equals(keys.secondK)) {
-                    return hitMarginString(second);
-                } else if (pos.equals(keys.thirdK)) {
-                    return hitMarginString(third);
-                } else if (pos.equals(keys.fourthK)) {
-                    return hitMarginString(fourth);
-                }
-                return "test";
+            if (line.split(",")[0].equals(secondRow)) {
+                second.add(Integer.parseInt(line.split(",")[2]));
             }
-
-            public void parseSongFile (InputStream input) throws IOException {
-                //Log.d(TAG,"parsing");
-                String line = "";
-                String firstRow = "64";
-                String secondRow = "192";
-                String thirdRow = "320";
-                String fourthRow = "448";
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                //Log.d(TAG, "File open for business!");
-                //Skipping lines which aren't related to hitObjects
-                while (!reader.readLine().equals("[HitObjects]")) {
-                }
-                //Adding Notes
-                while ((line = reader.readLine()) != null) {
-                    if (line.split(",")[0].equals(firstRow)) {
-                        first.add(Integer.parseInt(line.split(",")[2]));
-                    }
-                    if (line.split(",")[0].equals(secondRow)) {
-                        second.add(Integer.parseInt(line.split(",")[2]));
-                    }
-                    if (line.split(",")[0].equals(thirdRow)) {
-                        third.add(Integer.parseInt(line.split(",")[2]));
-                    }
-                    if (line.split(",")[0].equals(fourthRow)) {
-                        fourth.add(Integer.parseInt(line.split(",")[2]));
-                    }
-                }
+            if (line.split(",")[0].equals(thirdRow)) {
+                third.add(Integer.parseInt(line.split(",")[2]));
             }
-
-            public int getScrollSpeed () {
-                return scrollSpeed;
+            if (line.split(",")[0].equals(fourthRow)) {
+                fourth.add(Integer.parseInt(line.split(",")[2]));
             }
         }
+    }
+
+    public int getScrollSpeed () {
+        return scrollSpeed;
+    }
+}
 
