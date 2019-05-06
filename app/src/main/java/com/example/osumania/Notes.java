@@ -33,6 +33,22 @@ public class Notes {
         throw new IllegalArgumentException("toNextNote has received an invalid position.");
     }
 
+    public int getFirstPos(){
+        return firstPos;
+    }
+
+    public int getSecondPos() {
+        return secondPos;
+    }
+
+    public int getThirdPos() {
+        return thirdPos;
+    }
+
+    public int getFourthPos() {
+        return fourthPos;
+    }
+
     public int getCurrentNote(int pos)throws IllegalArgumentException{
         switch (pos) {
             case firstPos:
@@ -49,6 +65,10 @@ public class Notes {
 
     public boolean hasNotes(){
         return !(first.isEmpty() || second.isEmpty() || third.isEmpty() || fourth.isEmpty());
+    }
+
+    public ArrayList getFirstRow(){
+        return first;
     }
 
 }

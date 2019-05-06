@@ -51,16 +51,13 @@ public class Game {
         return allNotes;
     }
 
-    public boolean wasMiss(keys pos){
-        return findHitAcc(pos).equals("miss");
-    }
 
     public boolean wasTest(keys pos){
-        return findHitAcc(pos).equals("test");
+        return findHitAcc(pos).equals("userTest");
     }
 
     public double getCurrentTime() {
-        double lagCompensation = 1400;
+        double lagCompensation = -140;
         return System.currentTimeMillis()-startTime+lagCompensation;
     }
 
@@ -71,7 +68,7 @@ public class Game {
         checkForMissHelper(448);
     }
     private boolean checkForMissHelper(int pos){
-        double lagCompensation = 1100;
+        double lagCompensation = 700;
         if(n.hasNotes()) {
             if (getCurrentTime() - n.getCurrentNote(pos) > score.getMissMargin()+lagCompensation) {
 
@@ -84,42 +81,44 @@ public class Game {
         return false;
     }
 
-    String hitMarginString(int pos) {
+    private String hitMarginString(int pos) {
         double currentTime = getCurrentTime();
             Log.d(TAG, "User's hit = " + currentTime+", note was at "+
                     n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
-            Log.d(TAG,""+first.toString());
-            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getGreatMargin()) {
+            //Log.d(TAG,""+n.getFirstRow().toString());
+            if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getGreatMargin()) {
                 Log.d(TAG,"returning great");
+                n.toNextNote(pos);
                 score.onGreatHit();
                 return "great";
             }
-            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getOkMargin()) {
+            if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getOkMargin()) {
                 Log.d(TAG,"returning ok");
+                n.toNextNote(pos);
                 score.onOkHit();
                 return "ok";
             }
-            if (Math.abs(n.getCurrentNote(pos) - currentTime) < score.getBadMargin()) {
+            if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getBadMargin()) {
                 Log.d(TAG,"returning bad");
+                n.toNextNote(pos);
                 score.onBadHit();
                 return "bad";
             }
-        Log.d(TAG,"returning test");
-        return "test";
+        Log.d(TAG,"returning userTest");
+        return "userTest";
     }
 
-    private String findHitAcc(keys pos) throws NullPointerException {
-        //TODO remove magic #s
+    private String findHitAcc(keys pos) throws NullPointerException, IllegalArgumentException{
         if (pos.equals(keys.firstK)) {
-            return hitMarginString(64);
+            return hitMarginString(n.getFirstPos());
         } else if (pos.equals(keys.secondK)) {
-            return hitMarginString(192);
+            return hitMarginString(n.getSecondPos());
         } else if (pos.equals(keys.thirdK)) {
-            return hitMarginString(320);
+            return hitMarginString(n.getThirdPos());
         } else if (pos.equals(keys.fourthK)) {
-            return hitMarginString(448);
+            return hitMarginString(n.getFourthPos());
         }
-        return "test";
+        throw new IllegalArgumentException("findHitAcc has received an invalid position.");
     }
     private void parseSongFile (InputStream input) throws IOException {
         Log.d(TAG,"parsing");
@@ -129,6 +128,7 @@ public class Game {
         String thirdRow = "320";
         String fourthRow = "448";
         int lastNoteTime = 0;
+        final int getNoteTimeMillis = 2;
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         Log.d(TAG, "File open for business!");
         //Skipping lines which aren't related to hitObjects
@@ -137,22 +137,22 @@ public class Game {
         //Adding Notes
         while ((line = reader.readLine()) != null) {
             if (line.split(",")[0].equals(firstRow)) {
-                String noteTime = line.split(",")[2];
+                String noteTime = line.split(",")[getNoteTimeMillis];
                 first.add(Integer.parseInt(noteTime));
                 lastNoteTime = Integer.parseInt(noteTime);
             }
             if (line.split(",")[0].equals(secondRow)) {
-                String noteTime = line.split(",")[2];
+                String noteTime = line.split(",")[getNoteTimeMillis];
                 second.add(Integer.parseInt(noteTime));
                 lastNoteTime = Integer.parseInt(noteTime);
             }
             if (line.split(",")[0].equals(thirdRow)) {
-                String noteTime = line.split(",")[2];
+                String noteTime = line.split(",")[getNoteTimeMillis];
                 third.add(Integer.parseInt(noteTime));
                 lastNoteTime = Integer.parseInt(noteTime);
             }
             if (line.split(",")[0].equals(fourthRow)) {
-                String noteTime = line.split(",")[2];
+                String noteTime = line.split(",")[getNoteTimeMillis];
                 fourth.add(Integer.parseInt(noteTime));
                 lastNoteTime = Integer.parseInt(noteTime);
             }
@@ -162,10 +162,11 @@ public class Game {
         addSongFinish(lastNoteTime);
     }
     private void addSongFinish(int lastNoteTime){
-        first.add(lastNoteTime+5000);
-        second.add(lastNoteTime+5000);
-        third.add(lastNoteTime+5000);
-        fourth.add(lastNoteTime+5000);
+        int timeAfterSong = 5000;
+        first.add(lastNoteTime+timeAfterSong);
+        second.add(lastNoteTime+timeAfterSong);
+        third.add(lastNoteTime+timeAfterSong);
+        fourth.add(lastNoteTime+timeAfterSong);
     }
     public int getScrollSpeed () {
         return scrollSpeed;

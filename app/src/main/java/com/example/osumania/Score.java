@@ -19,7 +19,9 @@ public class Score {
         greatScore = 300;
         okScore = 200;
         badScore = 100;
+
         initGameInstance();
+
     }
     private void initGameInstance(){
         totalGreats = 0;
@@ -100,29 +102,30 @@ public class Score {
     }
     public void onGreatHit(){
         totalScore+= greatScore;
+        totalNotesHit++;
         totalGreats++;
-        updateAccuracy(greatMargin);
+        updateAccuracy();
     }
     public void onOkHit(){
         totalScore+= okScore;
+        totalNotesHit++;
         totalOks++;
-        updateAccuracy(okMargin);
+        updateAccuracy();
     }
     public void onBadHit(){
         totalScore+= badScore;
+        totalNotesHit++;
         totalBads++;
-        updateAccuracy(badMargin);
+        updateAccuracy();
     }
     public void onMiss(){
-        updateAccuracy(missMargin);
-    }
-    void updateAccuracy(double acc){
-        double toPercent = 100.;
-        if(acc==greatMargin)totalGreats++;
-        else if(acc==okMargin)totalOks++;
-        else if(acc==badMargin)totalBads++;
-        accuracy = (toPercent*((greatScore*totalGreats)+(okScore*totalOks)+(badScore*totalBads)))/(greatScore*totalNotesHit);
         totalNotesHit++;
+        updateAccuracy();
+    }
+    void updateAccuracy(){
+        double toPercent = 100.;
+        accuracy = (toPercent*((greatScore*totalGreats)+(okScore*totalOks)+(badScore*totalBads)))/(greatScore*totalNotesHit);
+
     }
     public static double getAccuracy(){
         return accuracy;
