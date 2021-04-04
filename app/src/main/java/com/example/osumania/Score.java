@@ -6,7 +6,7 @@ public class Score {
 
     private static double greatMargin, okMargin, badMargin, missMargin;
     private static int totalGreats, totalOks, totalBads, totalNotesHit, totalScore, combo;
-    private static double greatScore, okScore, badScore, accuracy;
+    static double greatScore, okScore, badScore, accuracy;
 
     public Score()
     {

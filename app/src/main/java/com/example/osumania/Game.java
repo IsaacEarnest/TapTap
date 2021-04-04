@@ -57,7 +57,7 @@ public class Game {
     }
 
     public double getCurrentTime() {
-        double lagCompensation = -140;
+        double lagCompensation = 140;
         return System.currentTimeMillis()-startTime+lagCompensation;
     }
 
@@ -81,30 +81,30 @@ public class Game {
         return false;
     }
 
-    private String hitMarginString(int pos) {
+    String hitMarginString(int pos) {
         double currentTime = getCurrentTime();
-            Log.d(TAG, "User's hit = " + currentTime+", note was at "+
-                    n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
-            //Log.d(TAG,""+n.getFirstRow().toString());
+//      Log.d(TAG, "User's hit = " + currentTime+", note was at "+
+        //n.getCurrentNote(pos)+". System is seeing "+Math.abs(n.getCurrentNote(pos) - currentTime)+"ms difference");
+        //Log.d(TAG,""+n.getFirstRow().toString());
             if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getGreatMargin()) {
-                Log.d(TAG,"returning great");
+            //    Log.d(TAG,"returning great");
                 n.toNextNote(pos);
                 score.onGreatHit();
                 return "great";
             }
             if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getOkMargin()) {
-                Log.d(TAG,"returning ok");
+             //   Log.d(TAG,"returning ok");
                 n.toNextNote(pos);
                 score.onOkHit();
                 return "ok";
             }
             if (Math.abs(getCurrentTime() - n.getCurrentNote(pos)) < score.getBadMargin()) {
-                Log.d(TAG,"returning bad");
+              //  Log.d(TAG,"returning bad");
                 n.toNextNote(pos);
                 score.onBadHit();
                 return "bad";
             }
-        Log.d(TAG,"returning userTest");
+       // Log.d(TAG,"returning userTest");
         return "userTest";
     }
 
@@ -121,7 +121,7 @@ public class Game {
         throw new IllegalArgumentException("findHitAcc has received an invalid position.");
     }
     private void parseSongFile (InputStream input) throws IOException {
-        Log.d(TAG,"parsing");
+        //Log.d(TAG,"parsing");
         String line = "";
         String firstRow = "64";
         String secondRow = "192";
@@ -130,7 +130,7 @@ public class Game {
         int lastNoteTime = 0;
         final int getNoteTimeMillis = 2;
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        Log.d(TAG, "File open for business!");
+        //Log.d(TAG, "File open for business!");
         //Skipping lines which aren't related to hitObjects
         while (!reader.readLine().equals("[HitObjects]")) {
         }

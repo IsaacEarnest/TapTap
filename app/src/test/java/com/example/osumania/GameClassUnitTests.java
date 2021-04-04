@@ -16,21 +16,25 @@ public class GameClassUnitTests {
     Game game;
     Score score;
     ArrayList<Integer> notes;
+    ArrayList<ArrayList<Integer>> allNotes;
     double accuracy;
+    Notes note;
 
     @Before
     public void setup() throws IOException {
         InputStream input = new FileInputStream("src/main/assets/Songs/Tutorial/tutorial[4K Basics].osu");
         game = new Game(input);
+        allNotes = game.getAllNotes();
+        note = new Notes(allNotes);
         score = new Score();
         notes = new ArrayList<>();
-        notes.add(1);
+        notes.add(100);
         accuracy = score.accuracy;
     }
 
     @Test
     public void calculateAccuracyTest() {
-        score.updateAccuracy(score.getGreatScore());
+        score.updateAccuracy();
         System.out.println(score.getAccuracy());
         assertEquals(100., score.getAccuracy()); //when totalGreats = 1 and totalNotesHit = 1
         //works when more notes are added
